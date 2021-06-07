@@ -1,0 +1,18 @@
+.button {
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--secundary-blue);
+  color: #ffffff;
+  border-style: none;
+  border-radius: 3px;
+  cursor: pointer;
+  outline: none;
+
+  &:hover {
+    background: var(--secundary-blue-dark);
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+}
