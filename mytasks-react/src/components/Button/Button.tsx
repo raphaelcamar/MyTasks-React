@@ -1,12 +1,20 @@
-import styles from './button.module.scss'
+import React, { ReactNode } from 'react';
+import styles from './button.module.scss';
 
-export function Button(props){
+type buttonProps = {
+  children: ReactNode;
+  onClick: () => void;
+}
 
-  const {label} = props
+export function Button(props: buttonProps){
+
+  const {children, onClick} = props;
 
   return (
-    <button className={styles.button} onClick={() =>{}}>
-      {label}
+    <button className={styles.button} onClick={() =>{ onClick() }}>
+      <div className={children === Symbol ? styles.loader : ''}>
+      {children}
+      </div>
     </button>
   )
 }

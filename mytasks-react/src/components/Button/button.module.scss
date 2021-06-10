@@ -7,12 +7,15 @@
   border-radius: 3px;
   cursor: pointer;
   outline: none;
-
   &:hover {
     background: var(--secundary-blue-dark);
   }
 
   &:active {
     transform: scale(0.9);
+  }
+
+  .loader {
+    font-size: 0;
   }
 }
