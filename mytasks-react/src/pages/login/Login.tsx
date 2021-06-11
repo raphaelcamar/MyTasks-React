@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Button } from "../../components/Button/Button";
 import Input from "../../components/Input/Input";
 import useFetchUser from "../../customHooks/useFetchUser";
@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import Link from "next/link"
 import Head from "next/head";
 import { GetStaticProps } from "next";
+import { UserContext } from "../../contexts/UserContext";
 
 export default function Login(){
   
@@ -19,6 +20,7 @@ export default function Login(){
   const [data, setData] = useState([{}]);
   const { loading, fetchGet } = useFetchUser();
   const router = useRouter();
+  const context = useContext(UserContext);
 
   async function send(){
 
@@ -29,6 +31,7 @@ export default function Login(){
     setError(err);
     setData(data);
     if(data.length > 0){
+      context.instanceUser(data);
       router.push('/main/Tasks');
     }
   }

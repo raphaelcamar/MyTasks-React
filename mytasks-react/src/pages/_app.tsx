@@ -1,12 +1,13 @@
-import '../styles/global.scss'
+import '../styles/global.scss';
+import { UserContextProvider }from '../contexts/UserContext';
 
 function MyApp({ Component, pageProps }) {
   return(
-    <div>
+    <UserContextProvider>
       <main>
         <Component  {...pageProps} />
       </main>
-    </div>
+    </UserContextProvider>
   )
 }
 
