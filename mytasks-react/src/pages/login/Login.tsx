@@ -7,6 +7,7 @@ import Loader from 'react-loader-spinner';
 import { useRouter } from 'next/router';
 import Link from "next/link"
 import Head from "next/head";
+import { GetStaticProps } from "next";
 
 export default function Login(){
   
@@ -14,18 +15,26 @@ export default function Login(){
     email: '',
     password:''
   });
-  const [rememberMe, setRememberMe] = useState(false);
-  const { loading, error, fetchUser, data } = useFetchUser(login);
+  const [error, setError] = useState(false);
+  const [data, setData] = useState([{}]);
+  const { loading, fetchGet } = useFetchUser();
   const router = useRouter();
-  
 
-  function send(){
-    fetchUser();
-    router.push('/main/Tasks');
+  async function send(){
+
+    const [data, err] = await fetchGet('/users', {
+        email: login.email,
+        password: login.password
+    });
+    setError(err);
+    setData(data);
+    if(data.length > 0){
+      router.push('/main/Tasks');
+    }
   }
 
   function handleChangeEmail(e){
-    const { value } = e.target
+    const { value } = e.target;
     setLogin({
       ...login, 
       email: value
@@ -33,7 +42,7 @@ export default function Login(){
   }
 
   function handleChangePassword(e){
-    const { value } = e.target
+    const { value } = e.target;
     setLogin({
       ...login, 
       password: value
@@ -63,14 +72,28 @@ export default function Login(){
             <p>Login</p>
             <span>Bem vindo de volta!</span>
             <div className={styles.description}>Faça seu login e mantenha sua vida organizada, cadastrando e editando suas tasks!</div>
-            {data === null || data === undefined && (
+            {data.length <= 0 && (
               <div className={styles.error}>Usuário ou senha incorretos!</div>
             )}
             {error && (
               <div className={styles.error}>Aconteceu alguma coisa, tente novamente mais tarde</div>
             )}
-            <Input label={'Email'} placeholder={'E-mail'} onChange={handleChangeEmail} typeInput='text' />
-            <Input label={'Senha'} placeholder={'Senha'} onChange={handleChangePassword} typeInput='password' />
+            <div className={styles.input}>
+              <Input inputprops={{
+                placeholder: 'E-mail',
+                value: login.email,
+                type: 'text',
+              }}
+              label={'Email'} onChange={handleChangeEmail} />
+            </div>
+            <div className={styles.input}>
+              <Input inputprops={{
+                value: login.password,
+                placeholder: 'Senha',
+                type: 'password',
+              }}
+              label={'Senha'} onChange={handleChangePassword} />
+            </div>
 
             <div className={styles.alternatives}>
               <div className={styles.checkBox}>
@@ -81,7 +104,9 @@ export default function Login(){
               <a href="">Esqueceu sua senha?</a>
             </div>
 
-            <Button onClick={send}>{loading ? (
+            <Button buttonProps={{
+              disabled: loading
+            }} onClick={send}>{loading ? (
               <Loader type='ThreeDots' color={'#FFF'} height={20}
               width={20}/>
             ) : (
@@ -92,4 +117,10 @@ export default function Login(){
     </div>
   )
 
+}
+
+export async function getStaticProps(context) {
+  return {
+    props: {},
+  }
 }

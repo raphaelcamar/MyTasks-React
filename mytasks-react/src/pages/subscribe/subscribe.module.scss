@@ -3,15 +3,14 @@
   height: 100vh;
   display: flex;
   flex-direction: row;
-  overflow: hidden;
 
   .wrapperLeft {
     width: 45%;
-    background-color: var(--secundary-blue);
+    background-color: #006ffe;
     display: flex;
     flex-direction: column;
     align-items: center;
-    // justify-content: space-evenly
+    overflow: hidden;
 
     p {
       width: 60%;
@@ -19,25 +18,40 @@
       color: white;
       font-size: 30px;
       word-spacing: 0.12rem;
-      margin-top: 3rem;
-      margin-bottom: 2rem;
+      margin: 2rem 0;
       font-weight: 100;
       line-height: 2.5rem;
       text-align: center;
     }
 
     .image {
-      margin-top: 6rem;
+      margin-top: 1rem;
     }
   }
 
   .wrapperRight {
     background: #fff;
     width: 100%;
+    overflow: auto;
 
     .subscribe {
       width: 85%;
       margin: 0 auto;
+
+      h2 {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--primary-blue);
+      }
+
+      p {
+        font-size: 18px;
+        color: var(--primary-blue);
+        font-weight: 500;
+        margin-bottom: 1rem;
+      }
 
       header {
         display: flex;
@@ -85,7 +99,7 @@
           display: flex;
           flex-direction: row;
           justify-content: space-between;
-
+          margin-top: 2rem;
           div {
             width: 40%;
           }
@@ -96,10 +110,15 @@
           padding-top: 2rem;
           padding-bottom: 2rem;
           color: #b9b9b9;
+
+          input {
+            margin-right: 1rem;
+          }
         }
 
         .button {
           width: 20%;
+          margin-bottom: 2rem;
         }
       }
     }
@@ -118,6 +137,7 @@
     }
 
     .wrapperLeft {
+      overflow: unset;
       background: rgb(0, 111, 254);
       background: -moz-linear-gradient(
         180deg,
@@ -138,6 +158,7 @@
     }
 
     .wrapperRight {
+      overflow: unset;
       .subscribe {
         width: 90%;
         margin: 0 auto;
@@ -168,8 +189,10 @@
           .containInputs {
             display: flex;
             flex-direction: column;
+            margin-top: initial;
 
             div {
+              margin-top: 1rem;
               width: 100%;
             }
           }

@@ -1,7 +1,6 @@
 .containerInput {
   display: flex;
   flex-direction: column;
-  margin-top: 10%;
 
   label {
     padding-bottom: 0.5rem;
@@ -18,5 +17,20 @@
       outline: none;
       border-color: var(--secundary-blue);
     }
+
+    &.error {
+      border: 1px solid var(--primary-error);
+      background-color: var(--secundary-error);
+    }
+  }
+
+  span {
+    margin-top: 0.5rem;
+    border: 1px solid var(--primary-error);
+    background-color: var(--secundary-error);
+    padding: 1rem;
+    text-align: center;
+    color: var(--primary-error);
+    font-size: 0.95rem;
   }
 }

@@ -2,32 +2,28 @@ import { useState } from 'react';
 import { api } from '../services/api';
 
 type fetchUserProps = {
-  name?: string;
-  cpf?: string;
-  isAdm?: boolean
   email: string;
   password: string;
 }
 
 type dataUser = {
+  name: string;
   cpf: string;
   email: string;
-  id: number;
-  isAdm: boolean;
-  name: string;
   password: string;
 }
 
-const useFetchUser = (props: fetchUserProps) =>{
+const useFetchUser = () =>{
 
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({} as dataUser);
 
-  function fetchUser(){
+  function fetchUser(user: fetchUserProps){
     setLoading(true);
     setError(false);
-    const { email, password } = props;
+
+    const { email, password } = user
 
     api.get('/users', {
       params:{
@@ -35,40 +31,69 @@ const useFetchUser = (props: fetchUserProps) =>{
         password: password
       }
     }).then(resp => {
-      setLoading(false);
       const [user] = resp.data
       setData(user);
+      setLoading(false);
     }).catch(err => {
       setError(true);
       setLoading(false);
+      setData(null);
     });
     
   }
 
-  function fetchSubscribe(){
+  function fetchSubscribe(user: dataUser){
     setLoading(true);
-    const { email, password, cpf, name, isAdm } = props
+    const { email, password, cpf, name } = user
     api.post('/users', {
       email,
       password,
       cpf,
       name,
-      isAdm
+      isAdm: false
     }).then(resp => {
+      setData(resp.data);
       setLoading(false);
-      console.log(resp)
     }).catch(err =>{
+      setData(null);
       setLoading(false);
-      console.log(err.response)
-    })
+    });
+  }
+
+  async function fetchGet(link: string, params: {}){
+    try {
+      setLoading(true);
+      const data = await api.get(link, {
+      params: params
+    });
+    setLoading(false);
+    return [data.data, null];
+    } catch (e) {
+      setLoading(false);
+      return [null, e];
+    }
+  }
+
+  async function fetchPost(link: string, params: {}){
+    try {
+      setLoading(true);
+      const data = await api.post(link, params);
+    setLoading(false);
+    return [data.data, null];
+    } catch (e) {
+      setLoading(false);
+      return [null, e];
+    }
   }
 
   return {
     fetchUser,
+    fetchSubscribe,
+    fetchGet,
+    fetchPost,
     error,
     loading,
     data,
-    fetchSubscribe
   }
 
 }

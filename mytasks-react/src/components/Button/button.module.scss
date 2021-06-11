@@ -15,6 +15,10 @@
     transform: scale(0.9);
   }
 
+  &:disabled {
+    background: rgb(150, 148, 148);
+  }
+
   .loader {
     font-size: 0;
   }
