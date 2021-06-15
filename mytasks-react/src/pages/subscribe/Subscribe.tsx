@@ -1,7 +1,7 @@
 import styles from './subscribe.module.scss';
 import Image from 'next/image';
 import Input from '../../components/Input/Input';
-import { Button } from '../../components/Button/Button';
+import Button from '../../components/Button/Button';
 import { useState } from 'react';
 import useFetchUser from '../../customHooks/useFetchUser';
 import router, { useRouter } from 'next/router';

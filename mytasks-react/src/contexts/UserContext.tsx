@@ -1,8 +1,8 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 
 type UserContextData = {
-  instanceUser: (user) => void
-  user: {}
+  instanceProfile: (profile) => void
+  profile: User
 }
 
 type UserContextProviderProps = {
@@ -19,19 +19,17 @@ type User = {
 export const UserContext = createContext({} as UserContextData);
 
 export function UserContextProvider({ children }: UserContextProviderProps){
-  const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
 
-  console.log(user)
-
-  function instanceUser(user){
-    setUser(user);
+  function instanceProfile(profile){
+    setProfile(profile);
   }
 
   return (
     <UserContext.Provider
       value={{
-        instanceUser,
-        user
+        instanceProfile,
+        profile
       }}
     >
 

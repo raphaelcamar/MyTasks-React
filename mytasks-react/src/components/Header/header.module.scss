@@ -1,0 +1,29 @@
+.Header {
+  background-color: var(--secundary-blue);
+  width: 100%;
+  color: white;
+  .container {
+    width: 98%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    img {
+      width: 90px;
+      height: 30px;
+      // filter: invert(99%) sepia(3%) saturate(2%) hue-rotate(298deg)
+      //   brightness(113%) contrast(100%);
+    }
+
+    .userActions {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      span {
+        // margin-right: 0.5rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+.drawer {
+  width: 20%;
+  flex-shrink: 0;
+
+  h1 {
+    width: 100%;
+    text-align: center;
+    padding: 3rem 0;
+    color: var(--primary-blue);
+  }
+
+  .buttonContainer {
+    padding: 0 1rem;
+  }
+
+  .item {
+    margin: 1rem 0;
+    padding: 1rem 1rem;
+  }
+
+  footer {
+    position: absolute;
+    bottom: 0;
+    // transform: translate(50%, 50%);
+    margin-left: calc(20% / 2);
+  }
+}
+
+.drawerPaper {
+  width: 20%;
+}
+
+@media (max-width: 1200px) {
+  .drawer {
+    width: 30%;
+  }
+}
