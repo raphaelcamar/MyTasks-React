@@ -5,6 +5,9 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import { ExpandMore } from '@material-ui/icons';
 import { useState } from 'react';
 import clsx from 'clsx';
 
@@ -15,46 +18,55 @@ type HeaderProps = {
 
 }
 
-const w = 20
+const w = 15
 
 const useStyles = makeStyles((theme: Theme) =>
-createStyles({
-  containerHeader: {
-    width: '95%',
-    margin: '0 auto',
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  appBar: {
-    background: '#2680eb',
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    width: `calc(100% - ${w}%)`,
-    marginLeft: `${w}%`,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-}),
+  createStyles({
+    containerHeader: {
+      padding: '0 2rem',
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+    },
+    appBar: {
+      background: '#2680eb',
+      transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+    },
+    appBarShift: {
+      width: `calc(100% - ${w}%)`,
+      marginLeft: `${w}%`,
+      transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    },
+    userActions: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }
+  }),
 );
 
 export default function Header({ handleClick, style, isOpen }: HeaderProps){
  
   const { instanceProfile, profile } = useProfile();
-  const [openOptions, setOpenOptions] = useState(false);
   const classes = useStyles();
-  // const [anchor, setAnchor] = useState<null | HTMLElement>(null); 
+  const [anchor, setAnchor] = useState<null | HTMLElement>(null); 
 
   function logout(){
+    setAnchor(null);
     instanceProfile({});
     router.push('/');
+  }
+
+  function handleMenu(event: React.MouseEvent<HTMLButtonElement>){
+    setAnchor(event.currentTarget);
   }
   
   return (
@@ -65,19 +77,35 @@ export default function Header({ handleClick, style, isOpen }: HeaderProps){
         })}
       >
         <div className={classes.containerHeader}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={() =>{ handleClick(); }}
-            edge="start"
-          >
-            <MenuIcon />
-          </IconButton>
-          
-        </Toolbar>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={() =>{ handleClick(); }}
+              edge="start"
+            >
+              <MenuIcon />
+            </IconButton>
+            
+          </Toolbar>
           <h2>Header</h2>
-          <p>Opções</p>
+          <div className={classes.userActions}>
+            <span>user</span>
+            <IconButton color="inherit" aria-label="open drawer" onClick={handleMenu}>
+              <ExpandMore />
+            </IconButton>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchor}
+              keepMounted
+              open={Boolean(anchor)}
+              onClose={() => setAnchor(null)}
+            >
+              <MenuItem onClick={() => setAnchor(null)}>Profile</MenuItem>
+              <MenuItem onClick={() => setAnchor(null)}>My account</MenuItem>
+              <MenuItem onClick={logout}>Logout</MenuItem>
+            </Menu>
+          </div>
         </div>
       </AppBar>
   )

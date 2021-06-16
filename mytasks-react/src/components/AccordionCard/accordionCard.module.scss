@@ -1,0 +1,19 @@
+.title {
+  p {
+    background-color: blue;
+    width: 100%;
+    flex-basis: 100%;
+  }
+}
+
+.test {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    filter: invert(68%) sepia(89%) saturate(366%) hue-rotate(98deg)
+      brightness(84%) contrast(84%);
+    width: 4rem;
+  }
+}

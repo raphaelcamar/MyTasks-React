@@ -1,9 +1,8 @@
-import Login from "./login/Login";
-import { UserContextProvider } from "../contexts/UserContext";
+import Login from './Login';
 
 export default function Home() {
-  return (
 
+  return (
     <>
       <Login />
     </>

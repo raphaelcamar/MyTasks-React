@@ -1,14 +1,14 @@
+import styles from '../pageStyles/login.module.scss';
 import { useContext, useState } from "react";
-import Button from "../../components/Button/Button";
-import Input from "../../components/Input/Input";
-import useFetchUser from "../../customHooks/useFetchUser";
-import styles from './login.module.scss';
+import Button from "../components/Button/Button";
+import Input from "../components/Input/Input";
+import useFetchUser from "../customHooks/useFetchUser";
 import Loader from 'react-loader-spinner';
 import { useRouter } from 'next/router';
 import Link from "next/link"
 import Head from "next/head";
 import { GetStaticProps } from "next";
-import { UserContext } from "../../contexts/UserContext";
+import { useProfile, UserContext } from "../contexts/UserContext";
 
 export default function Login(){
   
@@ -19,8 +19,8 @@ export default function Login(){
   const [error, setError] = useState(false);
   const [data, setData] = useState([{}]);
   const { loading, fetchGet } = useFetchUser();
+  const { instanceProfile } = useProfile();
   const router = useRouter();
-  const context = useContext(UserContext);
 
   async function send(){
 
@@ -31,7 +31,7 @@ export default function Login(){
     setError(err);
     setData(data[0]);
     if(data.length > 0){
-      context.instanceProfile(data);
+      instanceProfile(data[0]);
       router.push('/page/Tasks');
     }
   }
@@ -62,7 +62,7 @@ export default function Login(){
           <h1>MyTasks</h1>
           <nav>
             <a href="#">Sobre nós</a>
-            <Link href="/subscribe/Subscribe">Cadastre-se!</Link>
+            <Link href="/Subscribe">Cadastre-se!</Link>
           </nav>
         </header>
         <div className={styles.containerSvg}>
@@ -122,8 +122,9 @@ export default function Login(){
 
 }
 
-export async function getStaticProps(context) {
-  return {
-    props: {},
-  }
-}
+// export async function getStaticProps(context) {
+//   return {
+//     props: {},
+//     revalidate: 1
+//   }
+// }

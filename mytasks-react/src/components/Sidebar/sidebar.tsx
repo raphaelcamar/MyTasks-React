@@ -3,13 +3,20 @@ import styles from './sidebar.module.scss';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import SendIcon from '@material-ui/icons/Send';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ViewListIcon from '@material-ui/icons/ViewList';
 import PersonIcon from '@material-ui/icons/Person';
 import Button from '../Button/Button';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import clsx from 'clsx'
 
 export default function Sidebar({open}){
+
+  const router = useRouter();
+
+  const path = router.pathname;
   
   return (
     <>
@@ -29,34 +36,35 @@ export default function Sidebar({open}){
             + Cadastrar tarefa
           </Button>
         </div>
-        {/* <nav className={styles.navBar}>
-          <a href="#">Minhas tarefas</a>
-          <a href="#">Dashboards</a>
-          <a href="#">Minhas informações</a>
-        </nav> */}
-        <ListItem button className={styles.item}> 
-          <ListItemIcon>
-            <ViewListIcon />
-          </ListItemIcon>
-          <ListItemText primary="Minhas tarefas"/>
-        </ListItem>
+        <Link href="/page/Tasks">
+          <ListItem button className={clsx(styles.item, `${path === '/page/Tasks' ? styles.active : ''}`)}> 
+            <ListItemIcon>
+              <ViewListIcon style={{color: path === '/page/Tasks' ? '#2680eb': '' }}/>
+            </ListItemIcon>
+            <ListItemText primary="Minhas tarefas"/>
+          </ListItem>
+        </Link>
 
-        <ListItem button className={styles.item}>
-          <ListItemIcon >
-            <DashboardIcon color={'inherit'} />
-          </ListItemIcon>
-          <ListItemText primary="Minhas tarefas"/>
-        </ListItem>
+        <Link href="/page/Dashboard">
+          <ListItem button className={clsx(styles.item, `${path === '/page/Dashboard' ? styles.active : ''}`)}>
+            <ListItemIcon >
+              <DashboardIcon style={{color: path === '/page/Dashboard' ? '#2680eb': '' }}/>
+            </ListItemIcon>
+            <ListItemText primary="Dashboards"/>
+          </ListItem>
+        </Link>
 
-        <ListItem button className={styles.item}>
-          <ListItemIcon>
-            <PersonIcon />
-          </ListItemIcon>
-          <ListItemText primary="Minhas tarefas"/>
-        </ListItem>
-      <footer>
-        <img src="/sideBar.svg" alt="Icone de sidebar" />
-      </footer>
+        <Link href="/page/Profile">
+          <ListItem button className={clsx(styles.item, `${path === '/page/Profile' ? styles.active : ''}`)}>
+            <ListItemIcon>
+              <PersonIcon style={{color: path === '/page/Profile' ? '#2680eb': '' }} />
+            </ListItemIcon>
+            <ListItemText primary="Meu perfil"/>
+          </ListItem>
+        </Link>
+        <footer>
+          <Image width={'auto'} height={'auto'} src="/sideBar.svg" alt="Icone de sidebar" />
+        </footer>
       </Drawer>
     </> 
   )

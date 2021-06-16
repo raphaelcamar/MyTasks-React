@@ -1,5 +1,5 @@
 .drawer {
-  width: 20%;
+  width: 15%;
   flex-shrink: 0;
 
   h1 {
@@ -18,16 +18,19 @@
     padding: 1rem 1rem;
   }
 
+  .active {
+    color: var(--secundary-blue);
+  }
+
   footer {
     position: absolute;
     bottom: 0;
-    // transform: translate(50%, 50%);
-    margin-left: calc(20% / 2);
+    margin-left: calc(15% / 2);
   }
 }
 
 .drawerPaper {
-  width: 20%;
+  width: 15%;
 }
 
 @media (max-width: 1200px) {

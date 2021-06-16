@@ -1,15 +1,15 @@
-import styles from './subscribe.module.scss';
+import styles from '../pageStyles/subscribe.module.scss';
 import Image from 'next/image';
-import Input from '../../components/Input/Input';
-import Button from '../../components/Button/Button';
+import Input from '../components/Input/Input';
+import Button from '../components/Button/Button';
 import { useState } from 'react';
-import useFetchUser from '../../customHooks/useFetchUser';
+import useFetchUser from '../customHooks/useFetchUser';
 import router, { useRouter } from 'next/router';
 import Loader from 'react-loader-spinner';
 import Link from 'next/link';
 import Head from 'next/head';
-import validateForm from '../../helpers/validateForm';
-import { CpfHandler } from '../../helpers/cpfHandler';
+import validateForm from '../helpers/validateForm';
+import { CpfHandler } from '../helpers/cpfHandler';
 
 export default function Subscribe(props){
 
@@ -168,8 +168,8 @@ export default function Subscribe(props){
   )
 }
 
-export async function getStaticProps(context) {
-  return {
-    props: {},
-  }
-}
+// export async function getStaticProps(context) {
+//   return {
+//     props: {},
+//   }
+// }

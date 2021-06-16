@@ -17,6 +17,7 @@
 
   &:disabled {
     background: rgb(150, 148, 148);
+    cursor: not-allowed;
   }
 
   .loader {
