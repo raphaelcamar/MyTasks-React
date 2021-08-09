@@ -5,7 +5,7 @@ import {ButtonProps} from '@material-ui/core'
 type buttonProps = {
   children?: ReactNode;
   onClick: () => void;
-  buttonProps?: ButtonHTMLAttributes<any>;
+  buttonProps?: ButtonProps
 }
 const useStyles = makeStyles((theme: Theme) => ({
   button: {

@@ -116,7 +116,7 @@ const useStyles = makeStyles((theme)=> ({
     width: '100%',
     paddingTop: '2rem',
     paddingBottom: '2rem',
-    color: '#b9b9b9',
+    color: theme.palette.grey[200],
     
     '& input': {
       marginRight: '1rem',

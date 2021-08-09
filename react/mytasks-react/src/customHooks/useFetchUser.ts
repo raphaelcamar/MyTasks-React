@@ -68,7 +68,8 @@ const useFetchUser = () =>{
       params: params
     });
     setLoading(false);
-    return [data.data, null];
+    const [user] = data.data
+    return [user, null];
     } catch (e) {
       setLoading(false);
       return [null, e];

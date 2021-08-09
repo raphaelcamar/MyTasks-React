@@ -2,7 +2,7 @@ import { createContext, ReactNode, useContext, useState } from "react";
 
 //TODO: revisar tipos
 type UserContextData = {
-  instanceProfile: (profile: User) => void
+  instanceProfile: (profile: User, remember: boolean) => void
   profile: User,
   isAuth: boolean
 }
@@ -25,9 +25,12 @@ export function UserContextProvider({ children }: UserContextProviderProps){
   const [profile, setProfile] = useState({} as User);
   const [isAuth, setIsAuth] = useState(false);
 
-  function instanceProfile(profile: any){
+  function instanceProfile(profile: User, remember: boolean): void{
     setProfile(profile);
     setIsAuth(true);
+    if(remember){
+      localStorage.setItem('@logged', JSON.stringify(profile));
+    }
   }
 
   return (
@@ -45,6 +48,6 @@ export function UserContextProvider({ children }: UserContextProviderProps){
   )
 }
 
-export const useProfile = () =>{
+export const useProfile = () => {
   return useContext(UserContext);
 }

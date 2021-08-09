@@ -1,10 +1,11 @@
 import { makeStyles, CircularProgress, Button } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { ChangeEvent, FormEvent, InputHTMLAttributes, useState } from 'react';
 import { useProfile } from '../../contexts/UserContext';
 import useFetchUser from '../../customHooks/useFetchUser';
 import MainButton from '../atoms/Button';
 import Input from '../atoms/Input';
-import { Link } from 'react-router-dom';
+import { Link,  } from 'react-router-dom';
+import { useEffect } from 'react';
 
 export const useStyles = makeStyles((theme) => ({
 
@@ -16,7 +17,7 @@ export const useStyles = makeStyles((theme) => ({
     width: '100%',
   },
   containerSvg: {
-    marginTop: '20%',
+    // marginTop: '15%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -28,6 +29,11 @@ export const useStyles = makeStyles((theme) => ({
 
   wrapperLeft: {
     width: '55%',
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'space-between',
+    flexDirection: 'column',
+    overflow: 'hidden',
 
     '& header': {
       width: '90%',
@@ -61,6 +67,7 @@ export const useStyles = makeStyles((theme) => ({
   wrapperRight: {
     background: 'white',
     width: '45%',
+    overflow: 'auto'
   },
 
   login: {
@@ -109,7 +116,7 @@ export const useStyles = makeStyles((theme) => ({
 
     '& label': {
       marginLeft: '0.5rem',
-      color: 'b9b9b9'
+      color: theme.palette.grey[200]
     },
 
     '& a': {
@@ -119,6 +126,17 @@ export const useStyles = makeStyles((theme) => ({
 
   input: {
     marginTop: '2rem'
+  },
+  register: {
+    padding: '1rem 0',
+
+    '& span': {
+      color: theme.palette.grey[200]
+    },
+    '& a': {
+      color: theme.palette.primary.dark
+    },
+
   },
 
   '@media (max-width: 1200px)': {
@@ -133,6 +151,7 @@ export const useStyles = makeStyles((theme) => ({
       height: '100%',
       width: '100%',
       margin: '0 auto',
+      overflow: 'unset',
       '& header': {
         width: '90%',
 
@@ -146,6 +165,7 @@ export const useStyles = makeStyles((theme) => ({
     },
     wrapperRight: {
       width: '100%',
+      overflow: 'unset'
     },
     login: {
       marginBottom: '1.95rem',
@@ -163,7 +183,8 @@ export default function Login(){
 
   const [login, setLogin] = useState({
     email: '',
-    password:''
+    password:'',
+    remember: false
   });
   const [error, setError] = useState(false);
   const [data, setData] = useState([{}]);
@@ -172,22 +193,31 @@ export default function Login(){
   const classes = useStyles();
   // const router = useR
 
+  useEffect(() =>{
+    const user = localStorage.getItem('@logged')
+    if(user){
+      const data = JSON.parse(user);
+      instanceProfile(data, true);
+    }
+    console.log(user)
+  }, [])
+
   async function send(){
 
     const [data, err] = await fetchGet('/users', {
         email: login.email,
         password: login.password
     });
+
     setError(err);
-    setData(data[0]);
-    //TODO: arrumar lógica por trás disso
-    if(data.length > 0){
-      instanceProfile(data[0]);
+    setData(data);
+    if(data){
+      instanceProfile(data, login.remember);
       // router.push('/page/Tasks');
     }
   }
 
-  function handleChangeEmail(e: any){
+  function handleChangeEmail(e: ChangeEvent<HTMLInputElement>): void{
     const { value } = e.target;
     setLogin({
       ...login, 
@@ -195,12 +225,20 @@ export default function Login(){
     });
   }
 
-  function handleChangePassword(e: any){
+  function handleChangePassword(e: ChangeEvent<HTMLInputElement>): void{
     const { value } = e.target;
     setLogin({
       ...login, 
       password: value
     });
+  }
+
+  function remember(e: ChangeEvent<HTMLInputElement>): void{
+    const {checked} = e.target;
+    setLogin({
+      ...login,
+      remember: checked
+    })
   }
 
   return (
@@ -226,8 +264,11 @@ export default function Login(){
             <p>Login</p>
             <span>Bem vindo de volta!</span>
             <div className={classes.description}>Faça seu login e mantenha sua vida organizada, cadastrando e editando suas tasks!</div>
-            {data.length <= 0 && (
+            {!data && !error ? (
               <div className={classes.error}>Usuário ou senha incorretos!</div>
+            ): ''}
+            {error && (
+              <div className={classes.error}>Alguma coisa aconteceu. Tente novamente mais tarde.</div>
             )}
             <div className={classes.input}>
             <Input inputprops={{
@@ -247,7 +288,7 @@ export default function Login(){
             </div>
             <div className={classes.alternatives}>
               <div>
-                <input type="checkbox" name="rememberMe" id="rememberMe" />
+                <input type="checkbox" name="rememberMe" id="rememberMe" onChange={remember} checked={login.remember} />
                 <label htmlFor="rememberMe">Lembre-se de mim</label>
               </div>
               <a href="#">Esqueceu sua senha?</a>
@@ -258,6 +299,9 @@ export default function Login(){
               ) : (
                 'Entrar'
               )}</MainButton>
+              <div className={classes.register}>
+                <span>Não possui conta? <Link to="/subscribe">Registre-se!</Link></span>
+              </div>
           </div>
         </section>
       </div>
