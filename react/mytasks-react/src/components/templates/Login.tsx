@@ -1,127 +1,124 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles, CircularProgress } from '@material-ui/core';
 import React, { useState } from 'react';
 import { useProfile } from '../../contexts/UserContext';
 import useFetchUser from '../../customHooks/useFetchUser';
 import MainButton from '../atoms/Button';
+import Input from '../atoms/Input';
 
-export const useStyles = makeStyles(() => ({
+export const useStyles = makeStyles((theme) => ({
 
-//   .container {
-//   background-color: #f2f4f8;
-//   display: flex;
-//   flex-direction: row;
-//   height: 100vh;
-//   width: 100%;
+  container: {
+    backgroundColor: theme.palette.background.paper,
+    display: 'flex',
+    flexDirection: 'row',
+    height: '100vh',
+    width: '100%',
+  },
+  containerSvg: {
+    marginTop: '20%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 
-//   .wrapperLeft {
-//     width: 55%;
+  svg: {
+    width: '90%'
+  },
 
-//     .containerSvg {
-//       margin-top: 20%;
-//       display: flex;
-//       align-items: center;
-//       justify-content: center;
+  wrapperLeft: {
+    width: '55%',
 
-//       .svg {
-//         width: 90%;
-//       }
-//     }
-//     header {
-//       width: 90%;
-//       margin: 0 auto;
-//       display: flex;
-//       justify-content: space-between;
-//       padding: 1rem;
+    '& header': {
+      width: '90%',
+      margin: '0 auto',
+      display: 'flex',
+      justifyContent: 'space-between',
+      padding: '1rem',
 
-//       h1 {
-//         font-size: 1.8rem;
-//         color: var(--primary-blue);
-//         font-weight: bold;
-//       }
+      '& h1': {
+        fontSize: '1.8rem',
+        color: theme.palette.primary.main
+      },
+      '& nav': {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '30%',
 
-//       nav {
-//         display: flex;
-//         align-items: center;
-//         justify-content: space-between;
-//         width: 30%;
+        '& a': {
+          textDecoration: 'none',
+          color: 'black',
 
-//         a {
-//           text-decoration: none;
-//           color: black;
+          '&:hover': {
+            textDecoration: 'underline',
+            textDecorationColor: theme.palette.primary.light
+          }
+        }
+      },
+    },
+  },
+  wrapperRight: {
+    background: 'white',
+    width: '45%',
+  },
 
-//           &:hover {
-//             text-decoration: underline;
-//             text-decoration-color: #2680eb;
-//             color: #2680eb;
-//           }
-//         }
-//       }
-//     }
-//   }
+  login: {
+    width: '70%',
+    margin: '0 auto',
 
-//   .wrapperRight {
-//     background: white;
-//     width: 45%;
+    '& p:first-child': {
+      fontSize: '1.6rem',
+      fontWeight: 'bold',
+      marginTop: '5rem',
+      marginBottom: '4rem',
+      color: theme.palette.primary.main
+    },
 
-//     .login {
-//       width: 70%;
-//       margin: 0 auto;
+    '& span:nth-child(2)': {
+      fontSize: '1.1rem',
+      color: theme.palette.primary.main,
+      marginBottom: '4%',
+      fontWeight: '500',
+    },
+  },
 
-//       p:first-child {
-//         font-size: 1.6rem;
-//         font-weight: bold;
-//         margin-top: 5rem;
-//         margin-bottom: 4rem;
-//         color: var(--primary-blue);
-//       }
+  description: {
+    paddingTop: '2rem',
+    paddingBottom: '1.5rem',
+    borderBottomStyle: 'solid',
+    borderBottomColor: '#cfcfcf',
+    borderBottomWidth: 'thin',
+    wordSpacing: '1px',
+  },
 
-//       span:nth-child(2) {
-//         font-size: 1.1rem;
-//         color: var(--primary-blue);
-//         margin-bottom: 4%;
-//         font-weight: 500;
-//       }
+  error: {
+    color: theme.palette.error.main,
+    textAlign: 'center',
+    marginTop: '1rem',
+    padding: '1rem',
+    border: `1px solid ${theme.palette.error.main}`,
+    backgroundColor: theme.palette.error.light
+  },
+  alternatives: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: '1.2rem',
+    paddingBottom: '1.2rem',
 
-//       .description {
-//         padding-top: 2rem;
-//         padding-bottom: 1.5rem;
-//         border-bottom-style: solid;
-//         border-bottom-color: #cfcfcf;
-//         border-bottom-width: thin;
-//         word-spacing: 1px;
-//       }
+    '& label': {
+      marginLeft: '0.5rem',
+      color: 'b9b9b9'
+    },
 
-//       .error {
-//         color: #ef4e59;
-//         text-align: center;
-//         margin-top: 1rem;
-//         padding: 1rem;
-//         border: 1px solid #ef4e59;
-//         background-color: #ef4e5981;
-//       }
+    '& a': {
+      color: theme.palette.primary.dark
+    },
+  },
 
-//       .alternatives {
-//         display: flex;
-//         flex-direction: row;
-//         justify-content: space-between;
-//         padding-top: 1.2rem;
-//         padding-bottom: 1.2rem;
-
-//         label {
-//           margin-left: 0.5rem;
-//           color: #b9b9b9;
-//         }
-
-//         a {
-//           color: var(--secundary-blue);
-//         }
-//       }
-//       .input {
-//         margin-top: 2rem;
-//       }
-//     }
-//   }
-// }
+  input: {
+    marginTop: '2rem'
+  }
 
 // @media (max-width: 1200px) {
 //   .container {
@@ -212,7 +209,7 @@ export default function Login(){
     }
   }
 
-  function handleChangeEmail(e){
+  function handleChangeEmail(e: any){
     const { value } = e.target;
     setLogin({
       ...login, 
@@ -220,7 +217,7 @@ export default function Login(){
     });
   }
 
-  function handleChangePassword(e){
+  function handleChangePassword(e: any){
     const { value } = e.target;
     setLogin({
       ...login, 
@@ -230,72 +227,86 @@ export default function Login(){
 
   return (
     <>
-     <div className={classes.container}>
-      <Head>
-        <title>Login | MyTasks</title>
-      </Head>
-      <section className={classes.wrapperLeft}>
-        <header>
-          <h1>MyTasks</h1>
-          <nav>
-            <a href="#">Sobre nós</a>
-            <Link href="/Subscribe">Cadastre-se!</Link>
-          </nav>
-        </header>
-        <div className={classes.containerSvg}>
-          <object data="/login-svg.svg" className={classes.svg}></object>
-        </div>
-      </section>
-
-      <section className={classes.wrapperRight}>
-        <div className={classes.login}>
-          <p>Login</p>
-          <span>Bem vindo de volta!</span>
-          <div className={classes.description}>Faça seu login e mantenha sua vida organizada, cadastrando e editando suas tasks!</div>
-          {data.length <= 0 && (
-            <div className={classes.error}>Usuário ou senha incorretos!</div>
-          )}
-          {error && (
-            <div className={classes.error}>Aconteceu alguma coisa, tente novamente mais tarde</div>
-          )}
-          <div className={classes.input}>
-            <Input inputprops={{
-              placeholder: 'E-mail',
-              value: login.email,
-              type: 'text',
-            }}
-            label={'Email'} onChange={handleChangeEmail} />
+      <div className={classes.container}>
+        <section className={classes.wrapperLeft}>
+          <header>
+            <h1>Login | MyTasks</h1>
+            <nav>
+              {/* TODO: Fazer página sobre nós */}
+              <a href="#">Sobre nós</a>
+              {/* TODO: Criar rotas */}
+              <a href="/subscribe">Cadastre-se!</a>
+            </nav>
+          </header>
+          <div className={classes.containerSvg}>
+            {/* TODO: colocar biblioteca de desempenho, e gerar uma foto caso tenha slow 3g */}
+            <object data="/login-svg.svg" className={classes.svg}/>
           </div>
-          {/* <div className={styles.input}>
+        </section>
+        <section className={classes.wrapperRight}>
+          <div className={classes.login}>
+            <p>Login</p>
+            <span>Bem vindo de volta!</span>
+            <div className={classes.description}>Faça seu login e mantenha sua vida organizada, cadastrando e editando suas tasks!</div>
+            {/* {data.length <= 0 && ( */}
+              <div className={classes.error}>Usuário ou senha incorretos!</div>
+            {/* )} */}
+            <div className={classes.input}>
             <Input inputprops={{
-              value: login.password,
-              placeholder: 'Senha',
-              type: 'password',
-            }}
-            label={'Senha'} onChange={handleChangePassword} />
-          </div> */}
-
-          <div className={classes.alternatives}>
-            <div className={classes.checkBox}>
-              <input type="checkbox" name="rememberMe" id="rememberMe" />
-              <label htmlFor="rememberMe">Lembre-se de mim</label>
+                placeholder: 'E-mail',
+                value: login.email,
+                type: 'text',
+              }}
+              label={'Email'} onChange={handleChangeEmail} />
+            </div>
+            <div className={classes.input}>
+            <Input inputprops={{
+                value: login.password,
+                placeholder: 'Senha',
+                type: 'password',
+              }}
+              label={'Senha'} onChange={handleChangePassword} />
+            </div>
+            <div className={classes.alternatives}>
+              <div>
+                <input type="checkbox" name="rememberMe" id="rememberMe" />
+                <label htmlFor="rememberMe">Lembre-se de mim</label>
+              </div>
+              <a href="#">Esqueceu sua senha?</a>
             </div>
 
-            <a href="#">Esqueceu sua senha?</a>
-          </div>
+            <MainButton buttonProps={{
+              disabled: loading
+              }} onClick={send}>{!loading ? (
+                <CircularProgress color="inherit" size={30}/>
+              ) : (
+                'Entrar'
+              )}</MainButton>
 
-          {/* <MainButton buttonProps={{
-            disabled: loading
-          }} onClick={send}>{loading ? (
-            <Loader type='ThreeDots' color={'#FFF'} height={20}
-            width={20}/>
-          ) : (
-            'Entrar'
-          )}</MainButton> */}
-          <MainButton onClick={() => {}}>aSa</MainButton>
-        </div>
-      </section>
-    </div>
+          </div>
+        </section>
+      </div>
     </>
   )
 }
+//     <div className={classes.alternatives}>
+//       <div className={classes.checkBox}>
+//         <input type="checkbox" name="rememberMe" id="rememberMe" />
+//         <label htmlFor="rememberMe">Lembre-se de mim</label>
+//       </div>
+
+//       <a href="#">Esqueceu sua senha?</a>
+//     </div>
+
+//     <MainButton buttonProps={{
+//       disabled: loading
+//     }} onClick={send}>{loading ? (
+//       <Loader type='ThreeDots' color={'#FFF'} height={20}
+//       width={20}/>
+//     ) : (
+//       'Entrar'
+//     )}</MainButton>
+//     <MainButton onClick={() => {}}>aSa</MainButton>
+//   </div>
+// </section>
+// </div>

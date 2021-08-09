@@ -1,5 +1,7 @@
 import { createTheme } from "@material-ui/core";
 
+
+//TODO: b9b9b9, f2f4f8
 const theme = createTheme({
   palette: {
     primary: {
@@ -10,7 +12,7 @@ const theme = createTheme({
     },
     error: {
       main: '#f31e2c',
-      dark: '#ef4e5981'
+      light: '#ef4e5981'
     },
     background: {
       default: '#FAFAFA',
