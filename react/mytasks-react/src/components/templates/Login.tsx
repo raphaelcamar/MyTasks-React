@@ -1,4 +1,4 @@
-import { makeStyles, CircularProgress } from '@material-ui/core';
+import { makeStyles, CircularProgress, Button } from '@material-ui/core';
 import React, { useState } from 'react';
 import { useProfile } from '../../contexts/UserContext';
 import useFetchUser from '../../customHooks/useFetchUser';
@@ -118,69 +118,44 @@ export const useStyles = makeStyles((theme) => ({
 
   input: {
     marginTop: '2rem'
+  },
+
+  '@media (max-width: 1200px)': {
+    container: {
+      overflow: 'auto',
+      display: 'flex',
+      flexDirection: 'column',
+      background: 'none',
+      width: '100%'
+    },
+    wrapperLeft: {
+      height: '100%',
+      width: '100%',
+      margin: '0 auto',
+      '& header': {
+        width: '90%',
+
+        '& nav': {
+          width: '50%'
+        }
+      },
+    },
+    containerSvg: {
+      marginTop: 0
+    },
+    wrapperRight: {
+      width: '100%',
+    },
+    login: {
+      marginBottom: '1.95rem',
+      width: '90%',
+
+      '& p': {
+        marginTop: '3rem'
+      }
+    }
+
   }
-
-// @media (max-width: 1200px) {
-//   .container {
-//     overflow: auto;
-//     display: flex;
-//     flex-direction: column;
-//     background: none;
-
-//     .wrapperLeft {
-//       height: 100%;
-//       width: 100%;
-//       margin: 0 auto;
-//       background: rgb(242, 244, 248);
-//       background: -moz-linear-gradient(
-//         90deg,
-//         rgba(242, 244, 248, 1) 91%,
-//         rgba(255, 255, 255, 1) 100%
-//       );
-//       background: -webkit-linear-gradient(
-//         90deg,
-//         rgba(242, 244, 248, 1) 91%,
-//         rgba(255, 255, 255, 1) 100%
-//       );
-//       background: linear-gradient(
-//         90deg,
-//         rgba(242, 244, 248, 1) 91%,
-//         rgba(255, 255, 255, 1) 100%
-//       );
-//       filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f2f4f8",endColorstr="#ffffff",GradientType=1);
-
-//       header {
-//         width: 100%;
-
-//         nav {
-//           width: 50%;
-//         }
-//       }
-
-//       .draw {
-//         width: 90%;
-//         margin: 0 auto;
-//       }
-
-//       .containerSvg {
-//         margin-top: 0;
-//       }
-//     }
-//     .wrapperRight {
-//       width: 100%;
-
-//       .login {
-//         margin-bottom: 1.95rem;
-//         width: 90%;
-
-//         p {
-//           margin-top: 3rem;
-//         }
-//       }
-//     }
-//   }
-// }
-
 }))
 
 export default function Login(){
@@ -203,8 +178,9 @@ export default function Login(){
     });
     setError(err);
     setData(data[0]);
+    //TODO: arrumar lógica por trás disso
     if(data.length > 0){
-      // instanceProfile(data[0]);
+      instanceProfile(data[0]);
       // router.push('/page/Tasks');
     }
   }
@@ -230,7 +206,7 @@ export default function Login(){
       <div className={classes.container}>
         <section className={classes.wrapperLeft}>
           <header>
-            <h1>Login | MyTasks</h1>
+            <h1>MyTasks</h1>
             <nav>
               {/* TODO: Fazer página sobre nós */}
               <a href="#">Sobre nós</a>
@@ -248,9 +224,9 @@ export default function Login(){
             <p>Login</p>
             <span>Bem vindo de volta!</span>
             <div className={classes.description}>Faça seu login e mantenha sua vida organizada, cadastrando e editando suas tasks!</div>
-            {/* {data.length <= 0 && ( */}
+            {data.length <= 0 && (
               <div className={classes.error}>Usuário ou senha incorretos!</div>
-            {/* )} */}
+            )}
             <div className={classes.input}>
             <Input inputprops={{
                 placeholder: 'E-mail',
@@ -277,36 +253,14 @@ export default function Login(){
 
             <MainButton buttonProps={{
               disabled: loading
-              }} onClick={send}>{!loading ? (
-                <CircularProgress color="inherit" size={30}/>
+              }} onClick={send}>{loading ? (
+                <CircularProgress color="inherit" size={20}/>
               ) : (
                 'Entrar'
               )}</MainButton>
-
           </div>
         </section>
       </div>
     </>
   )
 }
-//     <div className={classes.alternatives}>
-//       <div className={classes.checkBox}>
-//         <input type="checkbox" name="rememberMe" id="rememberMe" />
-//         <label htmlFor="rememberMe">Lembre-se de mim</label>
-//       </div>
-
-//       <a href="#">Esqueceu sua senha?</a>
-//     </div>
-
-//     <MainButton buttonProps={{
-//       disabled: loading
-//     }} onClick={send}>{loading ? (
-//       <Loader type='ThreeDots' color={'#FFF'} height={20}
-//       width={20}/>
-//     ) : (
-//       'Entrar'
-//     )}</MainButton>
-//     <MainButton onClick={() => {}}>aSa</MainButton>
-//   </div>
-// </section>
-// </div>

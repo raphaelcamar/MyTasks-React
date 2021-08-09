@@ -29,7 +29,8 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   },
   loader:{
-    fontSize: 0
+    fontSize: 0,
+    padding: '1rem'
   }
 }));
 
@@ -38,10 +39,10 @@ export default function MainButton({children, onClick, buttonProps}: buttonProps
   const classes = useStyles();
 
   return (
-    <Button className={classes.button} onClick={onClick} >
-      {/* <div className={children === Symbol ? classes.loader : ''}> */}
+    <Button className={classes.button} onClick={onClick}>
+      <div className={children === Symbol ? classes.loader : ''}>
       {children}
-      {/* </div> */}
+      </div>
     </Button>
   )
 }
