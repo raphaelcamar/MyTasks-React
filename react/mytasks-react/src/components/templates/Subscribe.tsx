@@ -6,6 +6,7 @@ import validateForm from '../../helpers/validateForm';
 import theme from '../../theme';
 import MainButton from '../atoms/Button';
 import Input from '../atoms/Input';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme)=> ({
   container: {
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme)=> ({
     },
   },
   wrapperRight: {
-    background: '#fff',
+    // background: '#fff',
     width: '100%',
     overflow: 'auto',
   },
@@ -97,6 +98,11 @@ const useStyles = makeStyles((theme)=> ({
     borderBottomWidth: 'thin',
     wordSpacing: '0.01rem',
   },
+  img: {
+    // width: '80%'
+    marginTop: '1rem',
+    objectFit: 'contain',
+  },
   containInputs: {
     display: 'flex',
     flexDirection: 'row',
@@ -119,92 +125,72 @@ const useStyles = makeStyles((theme)=> ({
   button: {
     width: '20%',
     marginBottom: '2rem',
+  },
+
+  '@media (max-width: 1200px)': {
+    container: {
+      display: 'flex',
+      flexDirection: 'column',
+      overflow: 'auto'
+    },
+
+    wrapperLeft: {
+      width: '100%',
+      overflow: 'unset',
+      background: 'linear-gradient(180deg,rgba(0, 111, 254, 1) 0%,rgba(255, 255, 255, 1) 93%)',
+      filter: 'progid:DXImageTransform.Microsoft.gradient(startColorstr="#006ffe",endColorstr="#ffffff",GradientType=1)',
+
+      '& p':{
+        width: '90%'
+      }
+    },
+    wrapperRight: {
+      width: '100%',
+      overflow: 'unset'
+    },
+
+    subscribe: {
+      width: '90%',
+      margin: '0 auto',
+
+      '& header': {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+
+        '& nav': {
+          marginTop: '2rem',
+          marginBottom: '2rem',
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+
+          '& a': {
+            textDecoration: 'none',
+            color: 'black'
+          },
+        },
+      },
+    },
+
+    containInputs: {
+      display: 'flex',
+      flexDirection: 'column',
+      marginTop: 'initial',
+
+      '& div': {
+        marginTop: '1rem',
+        width: '100%',
+      }
+    },
+
+    button: {
+      width: '100%',
+      marginBottom: '2rem'
+    }
   }
 
-
-
 }));
-
-// @media (max-width: 1200px) {
-//   .container {
-//     display: flex;
-//     flex-direction: column;
-//     overflow: auto;
-
-//     .wrapperLeft,
-//     .wrapperRight {
-//       width: 100%;
-//     }
-
-//     .wrapperLeft {
-//       overflow: unset;
-//       background: rgb(0, 111, 254);
-//       background: -moz-linear-gradient(
-//         180deg,
-//         rgba(0, 111, 254, 1) 0%,
-//         rgba(255, 255, 255, 1) 93%
-//       );
-//       background: -webkit-linear-gradient(
-//         180deg,
-//         rgba(0, 111, 254, 1) 0%,
-//         rgba(255, 255, 255, 1) 93%
-//       );
-//       background: linear-gradient(
-//         180deg,
-//         rgba(0, 111, 254, 1) 0%,
-//         rgba(255, 255, 255, 1) 93%
-//       );
-//       filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#006ffe",endColorstr="#ffffff",GradientType=1);
-//     }
-
-//     .wrapperRight {
-//       overflow: unset;
-//       .subscribe {
-//         width: 90%;
-//         margin: 0 auto;
-//         header {
-//           display: flex;
-//           flex-direction: row;
-//           justify-content: center;
-//           nav {
-//             margin-top: 2rem;
-//             margin-bottom: 2rem;
-//             width: 100%;
-//             display: flex;
-//             justify-content: space-between;
-
-//             a {
-//               text-decoration: none;
-//               color: black;
-
-//               &:hover {
-//                 text-decoration: underline;
-//                 text-decoration-color: var(--secundary-blue);
-//                 color: var(--secundary-blue);
-//               }
-//             }
-//           }
-//         }
-//         .form {
-//           .containInputs {
-//             display: flex;
-//             flex-direction: column;
-//             margin-top: initial;
-
-//             div {
-//               margin-top: 1rem;
-//               width: 100%;
-//             }
-//           }
-//           .button {
-//             width: 100%;
-//             margin-bottom: 2rem;
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
 
 export default function Subscribe() {
   
@@ -271,7 +257,7 @@ export default function Subscribe() {
         <section className={classes.wrapperLeft}>
           <p>Está a poucos passos de criar sua conta em MyTasks!</p>
           <div>
-          <img src='/subscribe.svg' width={500} height={500} alt="Subscribe"/>
+          <img src='/subscribe.svg' width={350} height={370} alt="Subscribe" className={classes.img}/>
           </div>
         </section>
 
@@ -280,7 +266,8 @@ export default function Subscribe() {
           <header>
             <nav>
               <a href="#">Sobre nós</a>
-              <a href="/">Faça seu login</a>
+              {/* TODO: Mudar para router depois */}
+              <Link to="/">Faça seu login</Link>
             </nav>
           </header>
           <h2>Cadastro</h2>
@@ -345,7 +332,7 @@ export default function Subscribe() {
             </div>
 
             <div className={classes.button}>
-              <MainButton onClick={send}>{loading ? (
+              <MainButton onClick={send} disabled={false}>{loading ? (
                 <CircularProgress color="inherit" size={20}/>
               ) : (
                 'Cadastrar'

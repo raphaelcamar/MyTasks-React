@@ -1,5 +1,6 @@
 import { makeStyles } from '@material-ui/core';
 import React, { InputHTMLAttributes } from 'react';
+import clsx from 'clsx';
 
 const useStyles = makeStyles((theme)=> ({
 
@@ -22,11 +23,6 @@ const useStyles = makeStyles((theme)=> ({
       outline: 'none',
       borderColor: theme.palette.primary.light
     },
-
-    '&.error': {
-      border: '1px solid var(--primary-error)',
-      backgroundColor: 'var(--secundary-error)',
-    }
   },
 
   span: {
@@ -39,6 +35,19 @@ const useStyles = makeStyles((theme)=> ({
       fontSize: '0.95rem',
     },
   },
+
+  error: {
+    border: `1px solid ${theme.palette.error.main} !important`,
+    // backgroundColor: `${theme.palette.error.light}`,
+
+    // '&::placeholder': {
+    //   color: theme.palette.error.dark
+    // }
+    
+  },
+  errorValidator: {
+    color: theme.palette.error.main
+  }
   }));
 
   type inputProps = {
@@ -49,17 +58,21 @@ const useStyles = makeStyles((theme)=> ({
     messageValidator?: string;
   }
 
-const Input = (props: inputProps) => {
+function Input({label, onChange, inputprops, validator, messageValidator}: inputProps){
 
-  const { label, onChange, inputprops, validator, messageValidator } = props;
   const classes = useStyles();
 
   return (
     <div className={classes.containerInput}>
       <label htmlFor={label}>{label}</label>
-      <input {...inputprops} id={label} onChange={(v) =>{ onChange(v) }} />
+      <input
+        {...inputprops}
+        id={label}
+        onChange={(v) =>{ onChange(v) }}
+        className={validator === false ? classes.error : ''}
+      />
       {validator === false && (
-        <span>{messageValidator}</span>
+        <span className={classes.errorValidator}>{messageValidator}</span>
       )}
     </div>
    )

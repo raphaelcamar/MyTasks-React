@@ -4,6 +4,7 @@ import { useProfile } from '../../contexts/UserContext';
 import useFetchUser from '../../customHooks/useFetchUser';
 import MainButton from '../atoms/Button';
 import Input from '../atoms/Input';
+import { Link } from 'react-router-dom';
 
 export const useStyles = makeStyles((theme) => ({
 
@@ -169,6 +170,7 @@ export default function Login(){
   const { loading, fetchGet } = useFetchUser();
   const { instanceProfile } = useProfile();
   const classes = useStyles();
+  // const router = useR
 
   async function send(){
 
@@ -211,7 +213,7 @@ export default function Login(){
               {/* TODO: Fazer página sobre nós */}
               <a href="#">Sobre nós</a>
               {/* TODO: Criar rotas */}
-              <a href="/subscribe">Cadastre-se!</a>
+              <Link to="/subscribe">Cadastre-se!</Link>
             </nav>
           </header>
           <div className={classes.containerSvg}>
@@ -251,9 +253,7 @@ export default function Login(){
               <a href="#">Esqueceu sua senha?</a>
             </div>
 
-            <MainButton buttonProps={{
-              disabled: loading
-              }} onClick={send}>{loading ? (
+            <MainButton disabled={loading} onClick={send}>{loading ? (
                 <CircularProgress color="inherit" size={20}/>
               ) : (
                 'Entrar'

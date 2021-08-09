@@ -1,5 +1,6 @@
 import React, { ButtonHTMLAttributes, ReactNode } from 'react';
-import { makeStyles, Theme, Button } from '@material-ui/core'
+import { makeStyles, Theme, Button } from '@material-ui/core';
+import {ButtonProps} from '@material-ui/core'
 
 type buttonProps = {
   children?: ReactNode;
@@ -34,12 +35,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export default function MainButton({children, onClick, buttonProps}: buttonProps) {
+export default function MainButton(props) {
+
+  const { onClick, children, disabled } = props;
 
   const classes = useStyles();
 
   return (
-    <Button className={classes.button} onClick={onClick}>
+    <Button className={classes.button} onClick={onClick} disabled={disabled}>
       <div className={children === Symbol ? classes.loader : ''}>
       {children}
       </div>
