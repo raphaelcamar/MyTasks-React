@@ -1,5 +1,5 @@
 import { CircularProgress, makeStyles } from '@material-ui/core'
-import React, { useState } from 'react'
+import React, { KeyboardEvent, useState } from 'react'
 import useFetchUser from '../../customHooks/useFetchUser';
 import { CpfHandler } from '../../helpers/cpfHandler';
 import validateForm from '../../helpers/validateForm';
@@ -260,6 +260,12 @@ export default function Subscribe() {
     });
   }
 
+  function pressEnter(e: KeyboardEvent): void {
+    if(e.key === 'Enter'){
+      send();
+    }
+  }
+
   return (
     <>
       <div className={classes.container}>
@@ -288,7 +294,7 @@ export default function Subscribe() {
             Um lugar para te ajudar a organizar sua, de forma simples. Faça seu cadastro e comece já!
           </div>
 
-          <div>
+          <form onKeyPress={pressEnter}>
             <div className={classes.containInputs}>
                 <Input
                   inputprops={{
@@ -351,7 +357,7 @@ export default function Subscribe() {
               )}</MainButton>
             </div>
 
-          </div>
+          </form>
 
         </div>
       </section>

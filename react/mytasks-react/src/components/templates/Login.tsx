@@ -1,5 +1,5 @@
 import { makeStyles, CircularProgress, Button } from '@material-ui/core';
-import React, { ChangeEvent, FormEvent, InputHTMLAttributes, useState } from 'react';
+import React, { ChangeEvent, FormEvent, InputHTMLAttributes, KeyboardEvent, useState } from 'react';
 import { useProfile } from '../../contexts/UserContext';
 import useFetchUser from '../../customHooks/useFetchUser';
 import MainButton from '../atoms/Button';
@@ -99,6 +99,7 @@ export const useStyles = makeStyles((theme) => ({
     borderBottomColor: '#cfcfcf',
     borderBottomWidth: 'thin',
     wordSpacing: '1px',
+    color: theme.palette.grey[300]
   },
 
   error: {
@@ -218,6 +219,12 @@ export default function Login(){
     }
   }
 
+  function pressEnter(e: KeyboardEvent): void {
+    if(e.key === 'Enter'){
+      send();
+    }
+  }
+
   function handleChangeEmail(e: ChangeEvent<HTMLInputElement>): void{
     const { value } = e.target;
     setLogin({
@@ -261,7 +268,7 @@ export default function Login(){
           </div>
         </section>
         <section className={classes.wrapperRight}>
-          <div className={classes.login}>
+          <form className={classes.login} onKeyPress={pressEnter} >
             <p>Login</p>
             <span>Bem vindo de volta!</span>
             <div className={classes.description}>Faça seu login e mantenha sua vida organizada, cadastrando e editando suas tasks!</div>
@@ -303,7 +310,7 @@ export default function Login(){
               <div className={classes.register}>
                 <span>Não possui conta? <Link to="/subscribe">Registre-se!</Link></span>
               </div>
-          </div>
+          </form>
         </section>
       </div>
     </>

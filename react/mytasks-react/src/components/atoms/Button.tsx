@@ -1,11 +1,13 @@
-import React, { ButtonHTMLAttributes, ReactNode } from 'react';
+import React, { ButtonHTMLAttributes, ChangeEvent, KeyboardEvent, ReactNode } from 'react';
 import { makeStyles, Theme, Button } from '@material-ui/core';
 import {ButtonProps} from '@material-ui/core'
 
 type buttonProps = {
   children?: ReactNode;
   onClick: () => void;
-  buttonProps?: ButtonProps
+  buttonProps?: ButtonProps;
+  onKeyPress?: (e: KeyboardEvent) => void;
+  disabled?: boolean
 }
 const useStyles = makeStyles((theme: Theme) => ({
   button: {
@@ -22,6 +24,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
    '&:active': {
       transform: 'scale(0.9)',
+      transition: 'all ease 0.1s',
     },
   
     '&:disabled': {
@@ -35,14 +38,14 @@ const useStyles = makeStyles((theme: Theme) => ({
   }
 }));
 
-export default function MainButton(props) {
+export default function MainButton(props: buttonProps) {
 
-  const { onClick, children, disabled } = props;
+  const { onClick, children, disabled, onKeyPress } = props;
 
   const classes = useStyles();
 
   return (
-    <Button className={classes.button} onClick={onClick} disabled={disabled}>
+    <Button className={classes.button} onKeyPress={onKeyPress} onClick={onClick} disabled={disabled}>
       <div className={children === Symbol ? classes.loader : ''}>
       {children}
       </div>

@@ -1,17 +1,25 @@
-import { makeStyles, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { makeStyles, IconButton, Menu, MenuItem, AppBar } from '@material-ui/core';
 import React from 'react';
 import MenuIcon from '@material-ui/icons/Menu';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { useState } from 'react';
 import { useHistory } from 'react-router';
 import { useProfile } from '../../contexts/UserContext';
 import { useEffect } from 'react';
+import { ExpandMore } from '@material-ui/icons';
+import clsx from 'clsx'
+
+type headerProps = {
+  openDrawer: () => void;
+  isOpen: Boolean
+}
+
+const widthDrawer = 15;
 
 const useStyles = makeStyles((theme) => ({
 
   header: {
     width: '100%',
-    background: theme.palette.primary.light,
+    background: theme.palette.primary.dark,
     padding: '5px 0'
     
   },
@@ -30,10 +38,31 @@ const useStyles = makeStyles((theme) => ({
   userOptions: {
     display: 'flex',
     alignItems: 'center',
+  },
+  appBar: {
+    background: theme.palette.primary.light,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+
+  appBarShift: {
+    width: `calc(100% - ${widthDrawer}%)`,
+    marginLeft: `${widthDrawer}%`,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+
+    '@media screen and (max-width: 1200px)': {
+      width: `100%`,
+      marginLeft: '0',
+    }
   }
 }))
 
-export default function Header(){
+export default function Header({ openDrawer, isOpen }: headerProps){
 
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -49,16 +78,16 @@ export default function Header(){
     setTitle();
   }, [])
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  function handleClose(): void{
+    setAnchorEl(null)
+  }
 
-  function logoutUser(){
+  function logoutUser(): void{
     logout();
     router.push('/');
   }
 
-  function setTitle(){
+  function setTitle(): void{
     const currentRoute = router.location.pathname.split('/');
     const currentPage = currentRoute[currentRoute.length - 1];
     switch (currentPage) {
@@ -78,17 +107,22 @@ export default function Header(){
   }
 
   return (
-    <>
+    <AppBar
+      position="fixed"
+      className={clsx(classes.appBar, {
+      [classes.appBarShift]: isOpen,
+      })}
+    >
       <header className={classes.header}>
         <div className={classes.containerHeader}>
-          <IconButton>
+          <IconButton onClick={openDrawer}>
             <MenuIcon className={classes.icon} color='inherit' />
           </IconButton>
-          <p>{page}</p>
+          <h2>{page}</h2>
           <div className={classes.userOptions}>
             <p>{profile.name}</p>
             <IconButton onClick={handleClick}>
-              <ExpandMoreIcon className={classes.icon} color='inherit' />
+              <ExpandMore className={classes.icon} color='inherit' />
             </IconButton>
             <Menu
               id="menu"
@@ -105,6 +139,6 @@ export default function Header(){
           </div>
         </div>
       </header>
-    </>
+    </AppBar>
   )
 };
