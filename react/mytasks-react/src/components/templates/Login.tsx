@@ -6,6 +6,7 @@ import MainButton from '../atoms/Button';
 import Input from '../atoms/Input';
 import { Link,  } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useHistory } from 'react-router';
 
 export const useStyles = makeStyles((theme) => ({
 
@@ -44,7 +45,8 @@ export const useStyles = makeStyles((theme) => ({
 
       '& h1': {
         fontSize: '1.8rem',
-        color: theme.palette.primary.main
+        color: theme.palette.primary.main,
+        fontWeight: 'bold',
       },
       '& nav': {
         display: 'flex',
@@ -191,7 +193,7 @@ export default function Login(){
   const { loading, fetchGet } = useFetchUser();
   const { instanceProfile } = useProfile();
   const classes = useStyles();
-  // const router = useR
+  const router = useHistory();
 
   useEffect(() =>{
     const user = localStorage.getItem('@logged')
@@ -199,7 +201,6 @@ export default function Login(){
       const data = JSON.parse(user);
       instanceProfile(data, true);
     }
-    console.log(user)
   }, [])
 
   async function send(){
@@ -213,7 +214,7 @@ export default function Login(){
     setData(data);
     if(data){
       instanceProfile(data, login.remember);
-      // router.push('/page/Tasks');
+      router.push('/page/tasks');
     }
   }
 

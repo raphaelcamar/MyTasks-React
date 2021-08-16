@@ -2,7 +2,8 @@ import { createContext, ReactNode, useContext, useState } from "react";
 
 //TODO: revisar tipos
 type UserContextData = {
-  instanceProfile: (profile: User, remember: boolean) => void
+  instanceProfile: (profile: User, remember: boolean) => void,
+  logout: () => void;
   profile: User,
   isAuth: boolean
 }
@@ -12,7 +13,7 @@ type UserContextProviderProps = {
 }
 
 type User = {
-  id: number
+  id: number | null
   name: string;
   email: string;
   password: string;
@@ -33,10 +34,21 @@ export function UserContextProvider({ children }: UserContextProviderProps){
     }
   }
 
+  function logout(): void{
+    setProfile({
+      cpf: '',
+      email: '',
+      id: null,
+      password: '',
+      name: ''
+    })
+  }
+
   return (
     <UserContext.Provider
       value={{
         instanceProfile,
+        logout,
         profile,
         isAuth,
       }}

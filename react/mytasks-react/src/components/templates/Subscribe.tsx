@@ -21,8 +21,10 @@ const useStyles = makeStyles((theme)=> ({
     backgroundColor: '#006ffe',
     display: 'flex',
     flexDirection: 'column',
+    justifyContent: 'space-between',
     alignItems: 'center',
     overflow: 'hidden',
+    height: '100vh',
 
     '& p':{
       width: '60%',
@@ -34,6 +36,13 @@ const useStyles = makeStyles((theme)=> ({
       fontWeight: '100',
       lineHeight: '2.5rem',
       textAlign: 'center',
+    },
+
+    '& footer': {
+      width: '100%',
+      textAlign: 'center',
+      color: 'white',
+      margin: '2rem 0',
     },
 
     '& img': {
@@ -259,6 +268,9 @@ export default function Subscribe() {
           <div>
           <img src='/subscribe.svg' width={350} height={370} alt="Subscribe" className={classes.img}/>
           </div>
+          <footer>
+            Desenvolvido por Raphael Santantonio
+          </footer>
         </section>
 
       <section className={classes.wrapperRight}>

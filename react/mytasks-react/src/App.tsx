@@ -10,6 +10,7 @@ import {
   Link
 } from "react-router-dom";
 import Subscribe from './components/templates/Subscribe';
+import MainPage from './components/templates/MainPage';
 
 function App() {
   return (
@@ -18,6 +19,9 @@ function App() {
       <Switch>
         <Route path="/subscribe">
          <Subscribe />
+        </Route>
+        <Route path="/page">
+          <MainPage/>
         </Route>
         <Route path="/">
           <Login/>
