@@ -3,7 +3,7 @@ import { Drawer, ListItem, makeStyles, Theme } from '@material-ui/core'
 import { useHistory } from 'react-router';
 import MainButton from '../atoms/Button';
 import clsx from 'clsx';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { ViewList } from '@material-ui/icons';
 import { ListItemIcon, ListItemText } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
@@ -22,6 +22,11 @@ const useStyles = makeStyles((theme: Theme) => ({
       color: theme.palette.primary.main,
     },
 
+    '& a': {
+      textDecoration: 'none',
+      color: theme.palette.grey[100]
+    },
+
     '@media screen and (max-width: 1200px)': {
       width: '30%'
     }
@@ -34,6 +39,15 @@ const useStyles = makeStyles((theme: Theme) => ({
 
   active: {
     color: theme.palette.primary.light
+  },
+  activeLink: {
+
+    '& .MuiTypography-root': {
+      color: theme.palette.primary.light
+    },
+    '& .MuiSvgIcon-root': {
+      color: theme.palette.primary.light,
+    },
   },
 
   drawerPaper: {
@@ -56,6 +70,24 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 }));
 
+const links = [
+  {
+    path: '/page/tasks',
+    icon: <ViewList />,
+    text: "Minhas tarefas"
+  },
+  {
+    path: '/page/dashboards',
+    icon: <DashboardIcon />,
+    text: "Dashboards",
+  },
+  {
+    path: '/page/infos',
+    icon: <PersonIcon />,
+    text: 'Minhas informações',
+  }
+]
+
 
 export default function Sidebar({ open, close }) {
 
@@ -64,11 +96,7 @@ export default function Sidebar({ open, close }) {
 
   const getWidth = window.innerWidth
 
-  const path = router.location.pathname
-
   const variant = getWidth > 1200 ? "persistent" : "temporary";
-
-  console.log(path);
 
   return (
     <>
@@ -88,35 +116,18 @@ export default function Sidebar({ open, close }) {
           <MainButton onClick={() =>{}}>
             + Cadastrar tarefa
           </MainButton>
-
-          <Link to="/page/tasks">
-            <ListItem button className={clsx(classes.item, `${path === '/page/tasks' ? classes.active : ''}`)}> 
-              <ListItemIcon>
-                <ViewList style={{color: path === '/page/tasks' ? '#2680eb': '' }}/>
-              </ListItemIcon>
-              <ListItemText primary="Minhas tarefas"/>
-            </ListItem>
-          </Link>
-
-          <Link to="/page/dashboards">
-            <ListItem button className={clsx(classes.item, `${path === '/page/dashboards' ? classes.active : ''}`)}> 
-              <ListItemIcon>
-                <DashboardIcon style={{color: path === '/page/dashboards' ? '#2680eb': '' }}/>
-              </ListItemIcon>
-              <ListItemText primary="Dashboards"/>
-            </ListItem>
-          </Link>
-
-          <Link to="/page/infos">
-            <ListItem button className={clsx(classes.item, `${path === '/page/infos' ? classes.active : ''}`)}> 
-              <ListItemIcon>
-                <PersonIcon style={{color: path === '/page/infos' ? '#2680eb': '' }} />
-              </ListItemIcon>
-              <ListItemText primary="Minhas tarefas"/>
-            </ListItem>
-          </Link>
         </div>
 
+         {links.map(link => (
+            <NavLink to={link.path} activeClassName={classes.activeLink}>
+              <ListItem button className={classes.item}> 
+                <ListItemIcon>
+                  {link.icon}
+                </ListItemIcon>
+                <ListItemText primary={link.text}/>
+              </ListItem>
+            </NavLink>
+         ))}
       </Drawer>
     </>
   )

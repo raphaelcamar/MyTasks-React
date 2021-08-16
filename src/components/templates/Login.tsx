@@ -192,15 +192,13 @@ export default function Login(){
   const [error, setError] = useState(false);
   const [data, setData] = useState([{}]);
   const { loading, fetchGet } = useFetchUser();
-  const { instanceProfile } = useProfile();
+  const { instanceProfile, isAuth } = useProfile();
   const classes = useStyles();
   const router = useHistory();
 
   useEffect(() =>{
-    const user = localStorage.getItem('@logged')
-    if(user){
-      const data = JSON.parse(user);
-      instanceProfile(data, true);
+    if(isAuth){
+      router.push('/page/tasks')
     }
   }, [])
 

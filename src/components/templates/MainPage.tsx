@@ -12,6 +12,9 @@ import Sidebar from "../organisms/Sidebar";
 import { useState } from "react";
 import { makeStyles, Theme } from "@material-ui/core";
 import clsx from 'clsx';
+import PrivateRoute from "../atoms/PrivateRoute";
+import Login from "./Login";
+import Table from "../molecules/Table";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -72,9 +75,7 @@ export default function MainPage(){
       >
         <div className={classes.drawerHeader}>
         <Switch>
-          <Route path="/page/tasks">
-            <p>Tasks!</p>
-          </Route>
+          <PrivateRoute path="/page/tasks" component={Table} />
           <Route path="/page/dashboards">
             <p>Dashboards</p>
           </Route>
