@@ -1,5 +1,5 @@
-import React from 'react'
-import { Drawer, ListItem, makeStyles, Theme } from '@material-ui/core'
+import React, { useState } from 'react'
+import { Drawer, Input, ListItem, makeStyles, Theme } from '@material-ui/core'
 import { useHistory } from 'react-router';
 import MainButton from '../atoms/Button';
 import clsx from 'clsx';
@@ -8,6 +8,7 @@ import { ViewList } from '@material-ui/icons';
 import { ListItemIcon, ListItemText } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PersonIcon from '@material-ui/icons/Person';
+import ModalCreateTask from './Modal'
 
 const useStyles = makeStyles((theme: Theme) => ({
 
@@ -93,8 +94,13 @@ export default function Sidebar({ open, close }) {
 
   const classes = useStyles();
   const router = useHistory();
+  const [modal, setModal] = useState(false)
 
-  const getWidth = window.innerWidth
+  const getWidth = window.innerWidth;
+
+  function openModal(){
+    setModal(true)
+  }
 
   const variant = getWidth > 1200 ? "persistent" : "temporary";
 
@@ -113,7 +119,7 @@ export default function Sidebar({ open, close }) {
         <h1>MyTasks</h1>
 
         <div className={classes.buttonContainer}>
-          <MainButton onClick={() =>{}}>
+          <MainButton onClick={() => openModal()}>
             + Cadastrar tarefa
           </MainButton>
         </div>
@@ -129,6 +135,10 @@ export default function Sidebar({ open, close }) {
             </NavLink>
          ))}
       </Drawer>
+
+      <ModalCreateTask isOpen={modal} close={() => setModal(false)}>
+          <div>Olá mndio</div>
+      </ModalCreateTask>
     </>
   )
 }
