@@ -1,5 +1,8 @@
 import axios from 'axios';
 
 export const api = axios.create({
-  baseURL: 'https://backend-mytasks.herokuapp.com/'
+  baseURL: 'http://localhost:3003',
+  headers: {
+    'Content-Type': 'application/json',
+  }
 })
