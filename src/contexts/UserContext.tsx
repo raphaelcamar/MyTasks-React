@@ -2,57 +2,56 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
 
 //TODO: revisar tipos
 type UserContextData = {
-  instanceProfile: (profile: User, remember: boolean) => void,
+  instanceProfile: (data: LoginData) => void,
   logout: () => void;
-  profile: User,
-  isAuth: boolean
+  profile: LoginData,
+  isAuth: boolean,
+  getUserInStorage : () => LoginData,
 }
 
 type UserContextProviderProps = {
   children: ReactNode
 }
 
-type User = {
-  id: number | null
-  name: string;
-  email: string;
-  password: string;
-  cpf: string;
+type LoginData = {
+  email: String,
+  name: String,
+  tokenId: String,
+  rememberMe: Boolean
 }
 
 export const UserContext = createContext({} as UserContextData);
 
 export function UserContextProvider({ children }: UserContextProviderProps){
-  const [profile, setProfile] = useState({} as User);
+  const [profile, setProfile] = useState({} as any);
   const [isAuth, setIsAuth] = useState(false);
 
-  useEffect(() =>{
+  function getUserInStorage(){
     const user = localStorage.getItem('@logged') || sessionStorage.getItem('@logged');
-    if(user){
-      const data = JSON.parse(user);
-      instanceProfile(data, true);
-    }
-  }, [])
 
-  function instanceProfile(profile: User, remember: boolean): void{
-    setProfile(profile);
-    setIsAuth(true);
-    //TODO trocar para Token, quando o backend tiver pronto
-    if(remember){
-      localStorage.setItem('@logged', JSON.stringify(profile));
+    if(user){
+      setIsAuth(true);
+      setProfile(JSON.parse(user));
+      return JSON.parse(user);
     }else{
-      sessionStorage.setItem('@logged', JSON.stringify(profile))
+      return null
+    }
+  }
+
+  function instanceProfile(data: LoginData): void{
+    setProfile(data);
+    setIsAuth(true);
+    console.log(data)
+    if(data.rememberMe){
+      console.log('TRUUUUUUUUUUUUE')
+      localStorage.setItem('@logged', JSON.stringify(data));
+    }else{
+      sessionStorage.setItem('@logged', JSON.stringify(data))
     }
   }
 
   function logout(): void{
-    setProfile({
-      cpf: '',
-      email: '',
-      id: null,
-      password: '',
-      name: ''
-    });
+    setProfile(null);
     setIsAuth(false);
     localStorage.clear();
     sessionStorage.clear();
@@ -63,6 +62,7 @@ export function UserContextProvider({ children }: UserContextProviderProps){
       value={{
         instanceProfile,
         logout,
+        getUserInStorage,
         profile,
         isAuth,
       }}

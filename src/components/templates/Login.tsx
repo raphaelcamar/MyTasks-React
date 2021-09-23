@@ -1,12 +1,17 @@
 import { makeStyles, CircularProgress, Button } from '@material-ui/core';
 import React, { ChangeEvent, FormEvent, InputHTMLAttributes, KeyboardEvent, useState } from 'react';
 import { useProfile } from '../../contexts/UserContext';
-import useFetchUser from '../../customHooks/useFetchUser';
+import useFetchUser from '../../customHooks/useFetch';
 import MainButton from '../atoms/Button';
 import Input from '../atoms/Input';
 import { Link,  } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router';
+
+type ResponseError =  { 
+  error: boolean;
+  message: String
+}
 
 export const useStyles = makeStyles((theme) => ({
 
@@ -187,34 +192,33 @@ export default function Login(){
   const [login, setLogin] = useState({
     email: '',
     password:'',
-    remember: false
+    rememberMe: false
   });
-  const [error, setError] = useState(false);
-  const [data, setData] = useState([{}]);
-  const { loading, fetchGet } = useFetchUser();
-  const { instanceProfile, isAuth } = useProfile();
+  const [error, setError] = useState({} as ResponseError);
+  const { loading, fetchPost } = useFetchUser();
+  const { instanceProfile, getUserInStorage } = useProfile();
   const classes = useStyles();
   const router = useHistory();
 
   useEffect(() =>{
-    if(isAuth){
-      router.push('/page/tasks')
+    const result = getUserInStorage();
+
+    if(result){
+      router.push('/page/tasks');
     }
   }, [])
 
   async function send(){
 
-    const [data, err] = await fetchGet('/users', {
-        email: login.email,
-        password: login.password
-    });
+    const bodyResponse = await fetchPost('/user/login', login);
 
-    setError(err);
-    setData(data);
-    if(data){
-      instanceProfile(data, login.remember);
+    if(bodyResponse.error){
+      setError(bodyResponse);
+    }else{
+      instanceProfile(bodyResponse.user);
       router.push('/page/tasks');
     }
+
   }
 
   function pressEnter(e: KeyboardEvent): void {
@@ -240,10 +244,10 @@ export default function Login(){
   }
 
   function remember(e: ChangeEvent<HTMLInputElement>): void{
-    const {checked} = e.target;
+    const { checked } = e.target;
     setLogin({
       ...login,
-      remember: checked
+      rememberMe: checked
     })
   }
 
@@ -256,7 +260,6 @@ export default function Login(){
             <nav>
               {/* TODO: Fazer página sobre nós */}
               <a href="#">Sobre nós</a>
-              {/* TODO: Criar rotas */}
               <Link to="/subscribe">Cadastre-se!</Link>
             </nav>
           </header>
@@ -270,12 +273,10 @@ export default function Login(){
             <p>Login</p>
             <span>Bem vindo de volta!</span>
             <div className={classes.description}>Faça seu login e mantenha sua vida organizada, cadastrando e editando suas tasks!</div>
-            {!data && !error ? (
-              <div className={classes.error}>Usuário ou senha incorretos!</div>
+            {error.error ? (
+              <div className={classes.error}>{error.message}</div>
             ): ''}
-            {error && (
-              <div className={classes.error}>Alguma coisa aconteceu. Tente novamente mais tarde.</div>
-            )}
+
             <div className={classes.input}>
             <Input inputprops={{
                 placeholder: 'E-mail',
@@ -294,7 +295,7 @@ export default function Login(){
             </div>
             <div className={classes.alternatives}>
               <div>
-                <input type="checkbox" name="rememberMe" id="rememberMe" onChange={remember} checked={login.remember} />
+                <input type="checkbox" name="rememberMe" id="rememberMe" onChange={remember} checked={login.rememberMe} />
                 <label htmlFor="rememberMe">Lembre-se de mim</label>
               </div>
               <a href="#">Esqueceu sua senha?</a>

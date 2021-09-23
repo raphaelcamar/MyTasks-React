@@ -1,12 +1,19 @@
 import { CircularProgress, makeStyles } from '@material-ui/core'
 import React, { KeyboardEvent, useState } from 'react'
-import useFetchUser from '../../customHooks/useFetchUser';
+import useFetchUser from '../../customHooks/useFetch';
 import { CpfHandler } from '../../helpers/cpfHandler';
 import validateForm from '../../helpers/validateForm';
 import theme from '../../theme';
 import MainButton from '../atoms/Button';
 import Input from '../atoms/Input';
 import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router';
+import { useProfile } from '../../contexts/UserContext';
+
+type errorProps = {
+  error: Boolean,
+  message: String
+}
 
 const useStyles = makeStyles((theme)=> ({
   container: {
@@ -108,7 +115,6 @@ const useStyles = makeStyles((theme)=> ({
     wordSpacing: '0.01rem',
   },
   img: {
-    // width: '80%'
     marginTop: '1rem',
     objectFit: 'contain',
   },
@@ -134,6 +140,16 @@ const useStyles = makeStyles((theme)=> ({
   button: {
     width: '20%',
     marginBottom: '2rem',
+  },
+
+  error: {
+    border: `1px solid ${theme.palette.error.main}`,
+    background: `${theme.palette.error.light}`,
+    padding: '1rem 0',
+    width: 'auto',
+    textAlign: 'center',
+    margin: '0.5rem 0',
+    color: `${theme.palette.error.main}`
   },
 
   '@media (max-width: 1200px)': {
@@ -216,20 +232,37 @@ export default function Subscribe() {
   });
 
   const [ data, setData ] = useState({});
-  const [ error, setError ] = useState({});
+  const [ error, setError ] = useState({} as errorProps);
+
+  const router = useHistory();
 
   const classes = useStyles();
-  const {loading, fetchPost} = useFetchUser();
+  const { loading, fetchPost } = useFetchUser();
 
+  const { instanceProfile } = useProfile();
+
+  //TODO: refactor
   async function send(){
-    setValidator( validateForm(form));
-    const {cpf, email, name} = validator;
+
+    const { cpf, email, name } = validateForm(form);
+
+    setValidator({
+      cpf,
+      email,
+      name
+    });
+
     if(cpf && email && name){
-      const [data, error] = await fetchPost('/users', form);
-      setData(data);
-      setError(error);
+      const bodyResponse = await fetchPost('/user/new', form);
+      if(bodyResponse.error){
+        setError(bodyResponse)
+      }else{
+        console.log(bodyResponse.user);
+        instanceProfile(bodyResponse.user);
+        router.push('/page/Tasks');
+      } 
       if(!error){
-        // router.push('/main/Tasks');
+        
       }
     }
   }
@@ -284,7 +317,6 @@ export default function Subscribe() {
           <header>
             <nav>
               <a href="#">Sobre nós</a>
-              {/* TODO: Mudar para router depois */}
               <Link to="/">Faça seu login</Link>
             </nav>
           </header>
@@ -293,6 +325,17 @@ export default function Subscribe() {
           <div className={classes.description}>
             Um lugar para te ajudar a organizar sua, de forma simples. Faça seu cadastro e comece já!
           </div>
+
+          <>
+          {error ? (
+            <div className={classes.error}>
+              {error.message}
+            </div>
+          ): (
+            <>
+            </>
+          )}
+          </>
 
           <form onKeyPress={pressEnter}>
             <div className={classes.containInputs}>
