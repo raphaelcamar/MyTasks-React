@@ -8,7 +8,7 @@ import { ViewList } from '@material-ui/icons';
 import { ListItemIcon, ListItemText } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PersonIcon from '@material-ui/icons/Person';
-import ModalCreateTask from './Modal'
+import ModalCreateTask from './ModalCreateTask'
 
 const useStyles = makeStyles((theme: Theme) => ({
 
@@ -124,6 +124,7 @@ export default function Sidebar({ open, close }) {
           </MainButton>
         </div>
 
+{/* TODO: transformar em molecula */}
          {links.map(link => (
             <NavLink to={link.path} activeClassName={classes.activeLink}>
               <ListItem button className={classes.item}> 
@@ -136,9 +137,7 @@ export default function Sidebar({ open, close }) {
          ))}
       </Drawer>
 
-      <ModalCreateTask isOpen={modal} close={() => setModal(false)}>
-          <div>Olá mndio</div>
-      </ModalCreateTask>
+      <ModalCreateTask isOpen={modal} close={() => setModal(false)} />
     </>
   )
 }

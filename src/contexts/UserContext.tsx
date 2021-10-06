@@ -43,7 +43,6 @@ export function UserContextProvider({ children }: UserContextProviderProps){
     setIsAuth(true);
     console.log(data)
     if(data.rememberMe){
-      console.log('TRUUUUUUUUUUUUE')
       localStorage.setItem('@logged', JSON.stringify(data));
     }else{
       sessionStorage.setItem('@logged', JSON.stringify(data))
