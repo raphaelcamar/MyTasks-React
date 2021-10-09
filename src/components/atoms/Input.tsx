@@ -69,7 +69,7 @@ function Input({label, onChange, inputprops, validator, messageValidator}: input
       <input
         {...inputprops}
         id={label}
-        onChange={(v) =>{ onChange(v) }}
+        onChange={(v) => onChange(v) }
         className={validator === false ? classes.error : ''}
       />
       {validator === false && (

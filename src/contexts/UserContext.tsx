@@ -41,7 +41,6 @@ export function UserContextProvider({ children }: UserContextProviderProps){
   function instanceProfile(data: LoginData): void{
     setProfile(data);
     setIsAuth(true);
-    console.log(data)
     if(data.rememberMe){
       localStorage.setItem('@logged', JSON.stringify(data));
     }else{

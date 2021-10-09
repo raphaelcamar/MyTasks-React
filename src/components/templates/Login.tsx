@@ -286,12 +286,12 @@ export default function Login(){
               label={'Email'} onChange={handleChangeEmail} />
             </div>
             <div className={classes.input}>
-            <Input inputprops={{
-                value: login.password,
-                placeholder: 'Senha',
-                type: 'password',
-              }}
-              label={'Senha'} onChange={handleChangePassword} />
+              <Input inputprops={{
+                  value: login.password,
+                  placeholder: 'Senha',
+                  type: 'password',
+                }}
+                label={'Senha'} onChange={handleChangePassword} />
             </div>
             <div className={classes.alternatives}>
               <div>

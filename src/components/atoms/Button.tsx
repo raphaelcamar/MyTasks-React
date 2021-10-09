@@ -1,6 +1,6 @@
-import React, { ButtonHTMLAttributes, ChangeEvent, KeyboardEvent, ReactNode } from 'react';
+import { KeyboardEvent, ReactNode } from 'react';
 import { makeStyles, Theme, Button } from '@material-ui/core';
-import {ButtonProps} from '@material-ui/core'
+import { ButtonProps } from '@material-ui/core'
 
 type buttonProps = {
   children?: ReactNode;
@@ -47,7 +47,7 @@ export default function MainButton(props: buttonProps) {
   return (
     <Button className={classes.button} onKeyPress={onKeyPress} onClick={onClick} disabled={disabled}>
       <div className={children === Symbol ? classes.loader : ''}>
-      {children}
+        {children}
       </div>
     </Button>
   )
