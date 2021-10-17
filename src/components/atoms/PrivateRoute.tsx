@@ -1,24 +1,19 @@
-import React, { Component, ReactElement } from 'react';
-import { Redirect, Route, RouteComponentProps } from 'react-router';
-import { useProfile } from '../../contexts/UserContext';
+import React, {Component} from 'react'
+import { Redirect, Route } from 'react-router'
+import { useProfile } from '../../contexts/UserContext'
 
-type privateRouteProps = {
-  component: Component,
-  rest: RouteComponentProps
-}
-
-export default function PrivateRoute({ component, ...rest }: privateRouteProps): ReactElement {
+export default function PrivateRoute({component: Component, ...rest}) {
   const { isAuth } = useProfile();
-
   return (
     <Route
       {...rest}
-      render={(props) => (isAuth ? (
-        <Component {...props} />
-      ) : (
-        // eslint-disable-next-line react/prop-types
-        <Redirect to={{ pathname: '/', state: { from: props.location } }} />
-      ))}
-    />
-  );
+      render={props => isAuth ? (
+          <Component {...props}/>
+        ): (
+          <Redirect to={{pathname: '/', state: {from: props.location}}} />
+        )}
+    >
+      
+    </Route>
+  )
 }

@@ -13,15 +13,7 @@ type dataUser = {
   password: string;
 }
 
-type useFetchUserProps = {
-  fetchGet: () => any,
-  fetchPost: () => any,
-  error: boolean,
-  loading: boolean,
-  data: any,
-}
-
-const useFetchUser = (): useFetchUserProps => {
+const useFetchUser = () => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({} as any);
