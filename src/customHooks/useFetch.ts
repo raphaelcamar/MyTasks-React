@@ -13,40 +13,42 @@ type dataUser = {
   password: string;
 }
 
-const useFetchUser = () =>{
+type useFetchUserProps = {
+  fetchGet: () => any,
+  fetchPost: () => any,
+  error: boolean,
+  loading: boolean,
+  data: any,
+}
 
+const useFetchUser = (): useFetchUserProps => {
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({} as any);
 
-  async function fetchGet(link: string, params: {}){
+  async function fetchGet(link: string, params: {}) {
     setLoading(true);
     try {
       const { data } = await api.get(link, {
-        params: params
+        params,
       });
-      return data
-
+      return data;
     } catch (e) {
-      return e.response.data
-
-    }finally{
+      return e.response.data;
+    } finally {
       setLoading(false);
     }
   }
 
-  async function fetchPost(link: string, params: {}){
+  async function fetchPost(link: string, params: {}) {
     setLoading(true);
     try {
-      const {data} = await api.post(link, params)
-      return data
-
+      const { data } = await api.post(link, params);
+      return data;
     } catch (e) {
-      return e.response.data
-
-    }finally{
+      return e.response.data;
+    } finally {
       setLoading(false);
-
     }
   }
 
@@ -56,8 +58,7 @@ const useFetchUser = () =>{
     error,
     loading,
     data,
-  }
-
-}
+  };
+};
 
 export default useFetchUser;

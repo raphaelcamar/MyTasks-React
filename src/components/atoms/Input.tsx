@@ -1,31 +1,30 @@
 import { makeStyles } from '@material-ui/core';
-import React, { InputHTMLAttributes } from 'react';
-import clsx from 'clsx';
+import React, { InputHTMLAttributes, ReactElement } from 'react';
 
-const useStyles = makeStyles((theme)=> ({
+const useStyles = makeStyles((theme) => ({
 
   containerInput: {
     display: 'flex',
     flexDirection: 'column',
- 
-  '& label': {
-    paddingBottom: '0.5rem',
-  },
 
-  '& input': {
-    borderWidth: '0.36px',
-    borderColor: 'rgba(219, 219, 219, 0.36)',
-    boxShadow: '5px 5px 3px -2px rgba(0, 0, 0, 0.31)',
-    padding: '1rem',
-    borderRadius: '3px',
-
-    '&:focus': {
-      outline: 'none',
-      borderColor: theme.palette.primary.light
+    '& label': {
+      paddingBottom: '0.5rem',
     },
-  },
 
-  span: {
+    '& input': {
+      borderWidth: '0.36px',
+      borderColor: 'rgba(219, 219, 219, 0.36)',
+      boxShadow: '5px 5px 3px -2px rgba(0, 0, 0, 0.31)',
+      padding: '1rem',
+      borderRadius: '3px',
+
+      '&:focus': {
+        outline: 'none',
+        borderColor: theme.palette.primary.light,
+      },
+    },
+
+    span: {
       marginTop: '0.5rem',
       border: '1px solid var(--primary-error)',
       backgroundColor: 'var(--secundary-error)',
@@ -43,13 +42,13 @@ const useStyles = makeStyles((theme)=> ({
     // '&::placeholder': {
     //   color: theme.palette.error.dark
     // }
-    
+
   },
   errorValidator: {
     color: theme.palette.error.main,
     marginTop: '8px',
-  }
-  }));
+  },
+}));
 
   type inputProps = {
     label: string;
@@ -59,24 +58,31 @@ const useStyles = makeStyles((theme)=> ({
     messageValidator?: string;
   }
 
-function Input({label, onChange, inputprops, validator, messageValidator}: inputProps){
-
+function Input({
+  label, onChange, inputprops, validator, messageValidator,
+}: inputProps): ReactElement {
   const classes = useStyles();
 
   return (
     <div className={classes.containerInput}>
       <label htmlFor={label}>{label}</label>
       <input
-        {...inputprops}
         id={label}
-        onChange={(v) => onChange(v) }
+        onChange={(v) => onChange(v)}
         className={validator === false ? classes.error : ''}
+        {...inputprops}
       />
       {validator === false && (
         <span className={classes.errorValidator}>{messageValidator}</span>
       )}
     </div>
-   )
+  );
 }
 
-export default Input
+Input.defaultProps = {
+  inputprops: {},
+  validator: false,
+  messageValidator: '',
+};
+
+export default Input;

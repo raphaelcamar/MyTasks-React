@@ -1,6 +1,10 @@
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import React, {
+  Context,
+  ContextType,
+  createContext, ReactNode, useContext, useEffect, useState,
+} from 'react';
 
-//TODO: revisar tipos
+// TODO: revisar tipos
 type UserContextData = {
   instanceProfile: (data: LoginData) => void,
   logout: () => void;
@@ -14,41 +18,40 @@ type UserContextProviderProps = {
 }
 
 type LoginData = {
-  email: String,
-  name: String,
-  tokenId: String,
-  rememberMe: Boolean
+  email: string,
+  name: string,
+  tokenId: string,
+  rememberMe: boolean
 }
 
 export const UserContext = createContext({} as UserContextData);
 
-export function UserContextProvider({ children }: UserContextProviderProps){
+export function UserContextProvider({ children }: UserContextProviderProps): ContextType<any> {
   const [profile, setProfile] = useState({} as any);
   const [isAuth, setIsAuth] = useState(false);
 
-  function getUserInStorage(){
+  function getUserInStorage() {
     const user = localStorage.getItem('@logged') || sessionStorage.getItem('@logged');
 
-    if(user){
+    if (user) {
       setIsAuth(true);
       setProfile(JSON.parse(user));
       return JSON.parse(user);
-    }else{
-      return null
     }
+    return null;
   }
 
-  function instanceProfile(data: LoginData): void{
+  function instanceProfile(data: LoginData): void {
     setProfile(data);
     setIsAuth(true);
-    if(data.rememberMe){
+    if (data.rememberMe) {
       localStorage.setItem('@logged', JSON.stringify(data));
-    }else{
-      sessionStorage.setItem('@logged', JSON.stringify(data))
+    } else {
+      sessionStorage.setItem('@logged', JSON.stringify(data));
     }
   }
 
-  function logout(): void{
+  function logout(): void {
     setProfile(null);
     setIsAuth(false);
     localStorage.clear();
@@ -67,11 +70,9 @@ export function UserContextProvider({ children }: UserContextProviderProps){
     >
 
       {children}
-      
+
     </UserContext.Provider>
-  )
+  );
 }
 
-export const useProfile = () => {
-  return useContext(UserContext);
-}
+export const useProfile = (): Context => useContext(UserContext);

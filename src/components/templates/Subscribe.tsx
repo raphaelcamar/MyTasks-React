@@ -1,21 +1,21 @@
-import { CircularProgress, makeStyles } from '@material-ui/core'
-import React, { KeyboardEvent, useState } from 'react'
+import { CircularProgress, makeStyles } from '@material-ui/core';
+import React, { KeyboardEvent, ReactElement, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router';
 import useFetchUser from '../../customHooks/useFetch';
 import { CpfHandler } from '../../helpers/cpfHandler';
 import validateForm from '../../helpers/validateForm';
 import theme from '../../theme';
 import MainButton from '../atoms/Button';
 import Input from '../atoms/Input';
-import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router';
 import { useProfile } from '../../contexts/UserContext';
 
 type errorProps = {
-  error: Boolean,
-  message: String
+  error: boolean,
+  message: string
 }
 
-const useStyles = makeStyles((theme)=> ({
+const useStyles = makeStyles((theme) => ({
   container: {
     width: '100%',
     height: '100vh',
@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme)=> ({
     overflow: 'hidden',
     height: '100vh',
 
-    '& p':{
+    '& p': {
       width: '60%',
       // margin: '0 auto',
       color: 'white',
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme)=> ({
 
     '& img': {
       marginTop: '1rem',
-      objectFit: 'cover'
+      objectFit: 'cover',
     },
   },
   wrapperRight: {
@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme)=> ({
       fontWeight: '500',
       marginBottom: '1rem',
     },
-    
+
     '& header': {
       display: 'flex',
       flexDirection: 'row',
@@ -101,8 +101,8 @@ const useStyles = makeStyles((theme)=> ({
           '&:hover': {
             textDecoration: 'underline',
             textDecorationColor: theme.palette.primary.dark,
-            color: theme.palette.primary.dark
-          }
+            color: theme.palette.primary.dark,
+          },
         },
       },
     },
@@ -132,10 +132,10 @@ const useStyles = makeStyles((theme)=> ({
     paddingTop: '2rem',
     paddingBottom: '2rem',
     color: theme.palette.grey[200],
-    
+
     '& input': {
       marginRight: '1rem',
-    }
+    },
   },
   button: {
     width: '20%',
@@ -149,14 +149,14 @@ const useStyles = makeStyles((theme)=> ({
     width: 'auto',
     textAlign: 'center',
     margin: '0.5rem 0',
-    color: `${theme.palette.error.main}`
+    color: `${theme.palette.error.main}`,
   },
 
   '@media (max-width: 1200px)': {
     container: {
       display: 'flex',
       flexDirection: 'column',
-      overflow: 'auto'
+      overflow: 'auto',
     },
 
     wrapperLeft: {
@@ -165,13 +165,13 @@ const useStyles = makeStyles((theme)=> ({
       background: 'linear-gradient(180deg,rgba(0, 111, 254, 1) 0%,rgba(255, 255, 255, 1) 93%)',
       filter: 'progid:DXImageTransform.Microsoft.gradient(startColorstr="#006ffe",endColorstr="#ffffff",GradientType=1)',
 
-      '& p':{
-        width: '90%'
-      }
+      '& p': {
+        width: '90%',
+      },
     },
     wrapperRight: {
       width: '100%',
-      overflow: 'unset'
+      overflow: 'unset',
     },
 
     subscribe: {
@@ -192,7 +192,7 @@ const useStyles = makeStyles((theme)=> ({
 
           '& a': {
             textDecoration: 'none',
-            color: 'black'
+            color: 'black',
           },
         },
       },
@@ -206,19 +206,18 @@ const useStyles = makeStyles((theme)=> ({
       '& div': {
         marginTop: '1rem',
         width: '100%',
-      }
+      },
     },
 
     button: {
       width: '100%',
-      marginBottom: '2rem'
-    }
-  }
+      marginBottom: '2rem',
+    },
+  },
 
 }));
 
-export default function Subscribe() {
-  
+export default function Subscribe(): ReactElement {
   const [form, setForm] = useState({
     name: '',
     cpf: '',
@@ -228,11 +227,11 @@ export default function Subscribe() {
   const [validator, setValidator] = useState({
     name: true,
     cpf: true,
-    email: true
+    email: true,
   });
 
-  const [ data, setData ] = useState({});
-  const [ error, setError ] = useState({} as errorProps);
+  const [data, setData] = useState({});
+  const [error, setError] = useState({} as errorProps);
 
   const router = useHistory();
 
@@ -241,60 +240,59 @@ export default function Subscribe() {
 
   const { instanceProfile } = useProfile();
 
-  //TODO: refactor
-  async function send(){
-
+  // TODO: refactor
+  async function send() {
     const { cpf, email, name } = validateForm(form);
 
     setValidator({
       cpf,
       email,
-      name
+      name,
     });
 
-    if(cpf && email && name){
+    if (cpf && email && name) {
       const bodyResponse = await fetchPost('/user/new', form);
-      if(bodyResponse.error){
-        setError(bodyResponse)
-      }else{
+      if (bodyResponse.error) {
+        setError(bodyResponse);
+      } else {
         console.log(bodyResponse.user);
         instanceProfile(bodyResponse.user);
         router.push('/page/Tasks');
-      } 
-      if(!error){
-        
+      }
+      if (!error) {
+
       }
     }
   }
 
-  function cleanValidation(){
+  function cleanValidation() {
     setValidator({
       name: true,
       cpf: true,
-      email: true
+      email: true,
     });
   }
 
-  function handleForm(e, key){
+  function handleForm(e, key) {
     cleanValidation();
     const { value } = e.target;
     setForm({
       ...form,
-      [key]: value
+      [key]: value,
     });
   }
 
-  function handleCpf(e){
+  function handleCpf(e) {
     cleanValidation();
     const { value } = e.target;
     setForm({
       ...form,
-      cpf: CpfHandler(value)
+      cpf: CpfHandler(value),
     });
   }
 
   function pressEnter(e: KeyboardEvent): void {
-    if(e.key === 'Enter'){
+    if (e.key === 'Enter') {
       send();
     }
   }
@@ -305,40 +303,40 @@ export default function Subscribe() {
         <section className={classes.wrapperLeft}>
           <p>Está a poucos passos de criar sua conta em MyTasks!</p>
           <div>
-          <img src='/subscribe.svg' width={350} height={370} alt="Subscribe" className={classes.img}/>
+            <img src="/subscribe.svg" width={350} height={370} alt="Subscribe" className={classes.img} />
           </div>
           <footer>
             Desenvolvido por Raphael Santantonio
           </footer>
         </section>
 
-      <section className={classes.wrapperRight}>
-        <div className={classes.subscribe}>
-          <header>
-            <nav>
-              <a href="#">Sobre nós</a>
-              <Link to="/">Faça seu login</Link>
-            </nav>
-          </header>
-          <h2>Cadastro</h2>
-          <p>Bem vindo de volta!</p>
-          <div className={classes.description}>
-            Um lugar para te ajudar a organizar sua, de forma simples. Faça seu cadastro e comece já!
-          </div>
-
-          <>
-          {error ? (
-            <div className={classes.error}>
-              {error.message}
+        <section className={classes.wrapperRight}>
+          <div className={classes.subscribe}>
+            <header>
+              <nav>
+                <a href="#">Sobre nós</a>
+                <Link to="/">Faça seu login</Link>
+              </nav>
+            </header>
+            <h2>Cadastro</h2>
+            <p>Bem vindo de volta!</p>
+            <div className={classes.description}>
+              Um lugar para te ajudar a organizar sua, de forma simples. Faça seu cadastro e comece já!
             </div>
-          ): (
-            <>
-            </>
-          )}
-          </>
 
-          <form onKeyPress={pressEnter}>
-            <div className={classes.containInputs}>
+            <>
+              {error ? (
+                <div className={classes.error}>
+                  {error.message}
+                </div>
+              ) : (
+                <>
+                </>
+              )}
+            </>
+
+            <form onKeyPress={pressEnter}>
+              <div className={classes.containInputs}>
                 <Input
                   inputprops={{
                     value: form.name,
@@ -346,67 +344,72 @@ export default function Subscribe() {
                     type: 'text',
                   }}
                   validator={validator.name}
-                  messageValidator='O nome deverá ser válido, contendo apenas letras'
-                  label='Nome completo'
-                  onChange={(e) =>{ handleForm(e, 'name') }}
+                  messageValidator="O nome deverá ser válido, contendo apenas letras"
+                  label="Nome completo"
+                  onChange={(e) => { handleForm(e, 'name'); }}
                 />
-              <Input
-                inputprops={{
-                  value: form.cpf,
-                  placeholder: 'Ex: 012.345.678-90',
-                  type: 'text',
-                  maxLength: 14
-                }}
-                validator={validator.cpf}
-                messageValidator='O CPF deverá ser válido, contendo apenas números'
-                label='CPF'
-                onChange={(e) =>{ handleCpf(e) }}
-              />
-            </div>
+                <Input
+                  inputprops={{
+                    value: form.cpf,
+                    placeholder: 'Ex: 012.345.678-90',
+                    type: 'text',
+                    maxLength: 14,
+                  }}
+                  validator={validator.cpf}
+                  messageValidator="O CPF deverá ser válido, contendo apenas números"
+                  label="CPF"
+                  onChange={(e) => { handleCpf(e); }}
+                />
+              </div>
 
-            <div className={classes.containInputs}>
-              <Input
-                inputprops={{
-                  placeholder: 'Ex: email@gmail.com',
-                  type: 'text',
-                  value: form.email
-                }}
-                validator={validator.email}
-                messageValidator='O E-mail deverá ser um E-mail correto'
-                label='Email'
-                onChange={(e) =>{ handleForm(e, 'email') }}
-              />
-              <Input
-                inputprops={{
-                  value: form.password,
-                  placeholder: 'Sua senha',
-                  type: 'password'
-                }}
-                label='Senha'
-                onChange={(e) =>{ handleForm(e, 'password') }}
-              />
-            </div>
+              <div className={classes.containInputs}>
+                <Input
+                  inputprops={{
+                    placeholder: 'Ex: email@gmail.com',
+                    type: 'text',
+                    value: form.email,
+                  }}
+                  validator={validator.email}
+                  messageValidator="O E-mail deverá ser um E-mail correto"
+                  label="Email"
+                  onChange={(e) => { handleForm(e, 'email'); }}
+                />
+                <Input
+                  inputprops={{
+                    value: form.password,
+                    placeholder: 'Sua senha',
+                    type: 'password',
+                  }}
+                  label="Senha"
+                  onChange={(e) => { handleForm(e, 'password'); }}
+                />
+              </div>
 
-            <div className={classes.terms}>
-              <input type="checkbox" name="terms" id="terms" />
-              <label htmlFor="terms">Concordo com os termos de <a>Serviço e privacidade</a></label>
-            </div>
+              <div className={classes.terms}>
+                <input type="checkbox" name="terms" id="terms" />
+                <label htmlFor="terms">
+                  Concordo com os termos de
+                  {' '}
+                  <a>Serviço e privacidade</a>
+                </label>
+              </div>
 
-            <div className={classes.button}>
-              <MainButton onClick={send} disabled={false}>{loading ? (
-                <CircularProgress color="inherit" size={20}/>
-              ) : (
-                'Cadastrar'
-              )}</MainButton>
-            </div>
+              <div className={classes.button}>
+                <MainButton onClick={send} disabled={false}>
+                  {loading ? (
+                    <CircularProgress color="inherit" size={20} />
+                  ) : (
+                    'Cadastrar'
+                  )}
 
-          </form>
+                </MainButton>
+              </div>
 
-        </div>
-      </section>
-    </div>
+            </form>
+
+          </div>
+        </section>
+      </div>
     </>
-  )
+  );
 }
-
-

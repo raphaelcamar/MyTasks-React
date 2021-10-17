@@ -1,12 +1,16 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import React, {
+  ContextType,
+  createContext, ReactNode, useContext, useState,
+} from 'react';
+import { Context } from 'vm';
 
 type Task = {
-  id: Number;
-  name: String;
-  description: String;
+  id: number;
+  name: string;
+  description: string;
   data: Date;
-  status: String;
-  userId: Number;
+  status: string;
+  userId: number;
 }
 
 type TasksProviderProps = {
@@ -18,31 +22,29 @@ type TaskContextProps = {
   createTask: (task: Task) => void;
   updateTask: (tasks: Task[]) => void;
   deleteTask: (tasks: Task[]) => void;
-  instantiateTasks:   (tasks: Task[]) => void;
+  instantiateTasks: (tasks: Task[]) => void;
 }
 
 export const TasksContext = createContext({} as TaskContextProps);
 
-//TODO: Mudar tipos de any
-export function TasksContextProvider({ children }: TasksProviderProps){
-
+// TODO: Mudar tipos de any
+export function TasksContextProvider({ children }: TasksProviderProps): ContextType<any> {
   const [tasks, setTasks] = useState([] as Task[]);
 
-  function createTask(task: Task):void{
-    setTasks([...tasks, task])
+  function createTask(task: Task):void {
+    setTasks([...tasks, task]);
   }
 
-  function updateTask(tasks: Task[]):void{
-    setTasks(tasks);
+  function updateTask(task: Task[]):void {
+    setTasks(task);
   }
 
-
-  function deleteTask(tasks: Task[]):void{
-    setTasks(tasks);
+  function deleteTask(task: Task[]):void {
+    setTasks(task);
   }
 
-  function instantiateTasks(tasks: Task[]):void{
-    setTasks(tasks);
+  function instantiateTasks(task: Task[]):void {
+    setTasks(task);
   }
 
   return (
@@ -57,11 +59,9 @@ export function TasksContextProvider({ children }: TasksProviderProps){
     >
 
       {children}
-      
+
     </TasksContext.Provider>
-  )
+  );
 }
 
-export const useTasksContext = () =>{
-  return useContext(TasksContext);
-}
+export const useTasksContext = (): Context => useContext(TasksContext);

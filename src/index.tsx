@@ -13,5 +13,5 @@ ReactDOM.render(
       </TasksContextProvider>
     </UserContextProvider>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById('root'),
 );

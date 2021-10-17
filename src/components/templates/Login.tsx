@@ -1,16 +1,18 @@
 import { makeStyles, CircularProgress, Button } from '@material-ui/core';
-import React, { ChangeEvent, FormEvent, InputHTMLAttributes, KeyboardEvent, useState } from 'react';
+import React, {
+  ChangeEvent, FormEvent, InputHTMLAttributes, KeyboardEvent, ReactElement, useState,
+  useEffect,
+} from 'react';
+import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router';
 import { useProfile } from '../../contexts/UserContext';
 import useFetchUser from '../../customHooks/useFetch';
 import MainButton from '../atoms/Button';
 import Input from '../atoms/Input';
-import { Link,  } from 'react-router-dom';
-import { useEffect } from 'react';
-import { useHistory } from 'react-router';
 
-type ResponseError =  { 
+type ResponseError = {
   error: boolean;
-  message: String
+  message: string
 }
 
 export const useStyles = makeStyles((theme) => ({
@@ -30,7 +32,7 @@ export const useStyles = makeStyles((theme) => ({
   },
 
   svg: {
-    width: '90%'
+    width: '90%',
   },
 
   wrapperLeft: {
@@ -65,16 +67,16 @@ export const useStyles = makeStyles((theme) => ({
 
           '&:hover': {
             textDecoration: 'underline',
-            textDecorationColor: theme.palette.primary.light
-          }
-        }
+            textDecorationColor: theme.palette.primary.light,
+          },
+        },
       },
     },
   },
   wrapperRight: {
     background: 'white',
     width: '45%',
-    overflow: 'auto'
+    overflow: 'auto',
   },
 
   login: {
@@ -86,7 +88,7 @@ export const useStyles = makeStyles((theme) => ({
       fontWeight: 'bold',
       marginTop: '5rem',
       marginBottom: '4rem',
-      color: theme.palette.primary.main
+      color: theme.palette.primary.main,
     },
 
     '& span:nth-child(2)': {
@@ -104,7 +106,7 @@ export const useStyles = makeStyles((theme) => ({
     borderBottomColor: '#cfcfcf',
     borderBottomWidth: 'thin',
     wordSpacing: '1px',
-    color: theme.palette.grey[300]
+    color: theme.palette.grey[300],
   },
 
   error: {
@@ -113,7 +115,7 @@ export const useStyles = makeStyles((theme) => ({
     marginTop: '1rem',
     padding: '1rem',
     border: `1px solid ${theme.palette.error.main}`,
-    backgroundColor: theme.palette.error.light
+    backgroundColor: theme.palette.error.light,
   },
   alternatives: {
     display: 'flex',
@@ -124,25 +126,25 @@ export const useStyles = makeStyles((theme) => ({
 
     '& label': {
       marginLeft: '0.5rem',
-      color: theme.palette.grey[200]
+      color: theme.palette.grey[200],
     },
 
     '& a': {
-      color: theme.palette.primary.dark
+      color: theme.palette.primary.dark,
     },
   },
 
   input: {
-    marginTop: '2rem'
+    marginTop: '2rem',
   },
   register: {
     padding: '1rem 0',
 
     '& span': {
-      color: theme.palette.grey[200]
+      color: theme.palette.grey[200],
     },
     '& a': {
-      color: theme.palette.primary.dark
+      color: theme.palette.primary.dark,
     },
 
   },
@@ -153,7 +155,7 @@ export const useStyles = makeStyles((theme) => ({
       display: 'flex',
       flexDirection: 'column',
       background: 'none',
-      width: '100%'
+      width: '100%',
     },
     wrapperLeft: {
       height: '100%',
@@ -164,35 +166,34 @@ export const useStyles = makeStyles((theme) => ({
         width: '90%',
 
         '& nav': {
-          width: '50%'
-        }
+          width: '50%',
+        },
       },
     },
     containerSvg: {
-      marginTop: 0
+      marginTop: 0,
     },
     wrapperRight: {
       width: '100%',
-      overflow: 'unset'
+      overflow: 'unset',
     },
     login: {
       marginBottom: '1.95rem',
       width: '90%',
 
       '& p': {
-        marginTop: '3rem'
-      }
-    }
+        marginTop: '3rem',
+      },
+    },
 
-  }
-}))
+  },
+}));
 
-export default function Login(){
-
+export default function Login(): ReactElement {
   const [login, setLogin] = useState({
     email: '',
-    password:'',
-    rememberMe: false
+    password: '',
+    rememberMe: false,
   });
   const [error, setError] = useState({} as ResponseError);
   const { loading, fetchPost } = useFetchUser();
@@ -200,55 +201,53 @@ export default function Login(){
   const classes = useStyles();
   const router = useHistory();
 
-  useEffect(() =>{
+  useEffect(() => {
     const result = getUserInStorage();
 
-    if(result){
+    if (result) {
       router.push('/page/tasks');
     }
-  }, [])
+  }, []);
 
-  async function send(){
-
+  async function send() {
     const bodyResponse = await fetchPost('/user/login', login);
 
-    if(bodyResponse.error){
+    if (bodyResponse.error) {
       setError(bodyResponse);
-    }else{
+    } else {
       instanceProfile(bodyResponse.user);
       router.push('/page/tasks');
     }
-
   }
 
   function pressEnter(e: KeyboardEvent): void {
-    if(e.key === 'Enter'){
+    if (e.key === 'Enter') {
       send();
     }
   }
 
-  function handleChangeEmail(e: ChangeEvent<HTMLInputElement>): void{
+  function handleChangeEmail(e: ChangeEvent<HTMLInputElement>): void {
     const { value } = e.target;
     setLogin({
-      ...login, 
-      email: value
+      ...login,
+      email: value,
     });
   }
 
-  function handleChangePassword(e: ChangeEvent<HTMLInputElement>): void{
+  function handleChangePassword(e: ChangeEvent<HTMLInputElement>): void {
     const { value } = e.target;
     setLogin({
-      ...login, 
-      password: value
+      ...login,
+      password: value,
     });
   }
 
-  function remember(e: ChangeEvent<HTMLInputElement>): void{
+  function remember(e: ChangeEvent<HTMLInputElement>): void {
     const { checked } = e.target;
     setLogin({
       ...login,
-      rememberMe: checked
-    })
+      rememberMe: checked,
+    });
   }
 
   return (
@@ -265,33 +264,41 @@ export default function Login(){
           </header>
           <div className={classes.containerSvg}>
             {/* TODO: colocar biblioteca de desempenho, e gerar uma foto caso tenha slow 3g */}
-            <object data="/login-svg.svg" className={classes.svg}/>
+            <object data="/login-svg.svg" className={classes.svg} />
           </div>
         </section>
         <section className={classes.wrapperRight}>
-          <form className={classes.login} onKeyPress={pressEnter} >
+          <form className={classes.login} onKeyPress={pressEnter}>
             <p>Login</p>
             <span>Bem vindo de volta!</span>
-            <div className={classes.description}>Faça seu login e mantenha sua vida organizada, cadastrando e editando suas tasks!</div>
+            <div className={classes.description}>
+              Faça seu login e mantenha sua vida organizada, cadastrando e editando suas tasks!
+            </div>
             {error.error ? (
               <div className={classes.error}>{error.message}</div>
-            ): ''}
+            ) : ''}
 
             <div className={classes.input}>
-            <Input inputprops={{
-                placeholder: 'E-mail',
-                value: login.email,
-                type: 'text',
-              }}
-              label={'Email'} onChange={handleChangeEmail} />
+              <Input
+                inputprops={{
+                  placeholder: 'E-mail',
+                  value: login.email,
+                  type: 'text',
+                }}
+                label="Email"
+                onChange={handleChangeEmail}
+              />
             </div>
             <div className={classes.input}>
-              <Input inputprops={{
+              <Input
+                inputprops={{
                   value: login.password,
                   placeholder: 'Senha',
                   type: 'password',
                 }}
-                label={'Senha'} onChange={handleChangePassword} />
+                label="Senha"
+                onChange={handleChangePassword}
+              />
             </div>
             <div className={classes.alternatives}>
               <div>
@@ -301,17 +308,24 @@ export default function Login(){
               <a href="#">Esqueceu sua senha?</a>
             </div>
 
-            <MainButton disabled={loading} onClick={send}>{loading ? (
-                <CircularProgress color="inherit" size={20}/>
+            <MainButton disabled={loading} onClick={send}>
+              {loading ? (
+                <CircularProgress color="inherit" size={20} />
               ) : (
                 'Entrar'
-              )}</MainButton>
-              <div className={classes.register}>
-                <span>Não possui conta? <Link to="/subscribe">Registre-se!</Link></span>
-              </div>
+              )}
+
+            </MainButton>
+            <div className={classes.register}>
+              <span>
+                Não possui conta?
+                {' '}
+                <Link to="/subscribe">Registre-se!</Link>
+              </span>
+            </div>
           </form>
         </section>
       </div>
     </>
-  )
+  );
 }

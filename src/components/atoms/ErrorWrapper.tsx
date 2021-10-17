@@ -1,9 +1,7 @@
-import React from 'react'
+import React, { ReactElement } from 'react';
 
-export const ErrorWrapper = () => {
+export default function ErrorWrapper(): ReactElement {
   return (
-    <div>
-      
-    </div>
-  )
+    <div />
+  );
 }
